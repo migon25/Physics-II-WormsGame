@@ -27,7 +27,7 @@ bool GameScene::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
-	App->physics->SetAtmosphere(-10.0, 0, 0.00001);
+	//App->physics->SetAtmosphere(-10.0, 0, 0.00001);
 
 	ball = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 0, 10, 10, Collider::Type::BULLET, this);
 
@@ -35,6 +35,7 @@ bool GameScene::Start()
 	ball->surface = 2; // m^2
 	ball->dragCoefficient = -0.4;
 	ball->liftCoefficient = 1.2;
+	ball->frictionCoefficient = 0.5;
 
 	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50, Collider::Type::NONE, this);
 
@@ -63,12 +64,14 @@ update_status GameScene::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		SDL_Rect rect;
-		rect.x = App->input->GetMouseX();
-		rect.y = App->input->GetMouseY();
+		rect.x = App->input->GetMouseX() - 25;
+		rect.y = App->input->GetMouseY() - 25;
 		rect.w = 50;
 		rect.h = 50;
 		PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
-		pb->physics_enabled = false;
+		pb->mass = 30;
+		pb->frictionCoefficient = 0.5;
+		pb->physics_enabled = true;
 	}
 
 	return UPDATE_CONTINUE;
