@@ -1,7 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
-#include "Box2D/Box2D/Box2D.h"
+#include "Vector2.h"
+#include "Collider.h"
 
 #define GRAVITY_X 0.0f
 #define GRAVITY_Y -7.0f
@@ -16,34 +17,52 @@
 #define RAD_TO_DEG(r) ((float) RAD_PER_DEG * (r))
 #define DEG_TO_RAD(r) ((float) DEG_PER_RAD * (r))
 
+#define MAX_PHYSICS_BODIES 350
+
 // Small class to return to other modules to track position and rotation of physics bodies
-class PhysBody
+struct PhysBody
 {
-public:
-	PhysBody();
-	~PhysBody();
+	// Position
+	// You could also use an array/vector
+	Vector2 position;
+
+	// Velocity
+	Vector2 velocity;
+
+	// Acceleration
+	Vector2 acceleration;
+
+	// Force (total) applied to the ball
+	Vector2 totalForce;
+
+	// Mass
+	double mass;
+
+	// Aerodynamics stuff
+	double surface; // Effective wet surface
+	double dragCoefficient;
+	double liftCoefficient;
+
+	Collider* collider;
+	double gravityScale;
+	double frictionForce;
 
 	void GetPosition(int& x, int &y) const;
-	float GetRotation() const;
-	bool Contains(int x, int y) const;
-	int RayCast(int x1, int y1, int x2, int y2, float& normal_x, float& normal_y) const;
+	void Remove();
 
+	bool pendingToDelete;
+	bool physics_enabled;
+};
 
-public:
-	enum class Type {
-		BOUNCER,
-		SMALL_BIRD,
-		BIG_BIRD,
-		NONE
-	};
-	int width, height;
-	b2Body* body;
-	Module* listener;
-	Type type;
+struct Atmosphere {
+	double windx;
+	double windy;
+
+	double density;
 };
 
 // Module --------------------------------------
-class ModulePhysics : public Module, public b2ContactListener // TODO
+class ModulePhysics : public Module // TODO
 {
 public:
 	ModulePhysics(Application* app, bool start_enabled = true);
@@ -51,28 +70,22 @@ public:
 
 	bool Start();
 	update_status PreUpdate();
+	update_status Update();
 	update_status PostUpdate();
 	bool CleanUp();
-	bool CleanStage();
 
-	PhysBody* CreateCircle(int x, int y, int radius, int dynamic);
-	PhysBody* CreateRectangle(int x, int y, int width, int height, int dynamic);
-	PhysBody* CreateRectangleSensor(int x, int y, int width, int height, int dynamic);
-	PhysBody* CreateCircleSensor(int x, int y, int radius, int dynamic);
-	PhysBody* CreateChain(int x, int y, int* points, int size, int dynamic);
-	
-	// joints functions
-	b2RevoluteJoint* CreateRevoluteJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, float angle, bool collideConnected, bool enableLimit);
-	b2PrismaticJoint* CreatePrismaticJoint(PhysBody* A, b2Vec2 anchorA, PhysBody* B, b2Vec2 anchorB, b2Vec2 axys, float maxHeight, bool collideConnected, bool enableLimit);
+	PhysBody* CreatePhysBody(SDL_Rect rect, Collider::Type type, Module* listener);
+	PhysBody* CreatePhysBody(int x, int y, int width, int height, Collider::Type type, Module* listener);
 
-	// b2ContactListener ---
-	void BeginContact(b2Contact* contact);
+	void OnCollision(Collider* colA, Collider* colB) override;
 
+	void SetAtmosphere(double _windX, double _windY, double _density) { atmosphere.windx = _windX; atmosphere.windy = _windY; atmosphere.density = _density; };
 private:
+	PhysBody* physicsBodies[MAX_PHYSICS_BODIES] = { nullptr };
 
-	bool debug;
-	b2World* world;
-	b2MouseJoint* mouse_joint;
-	b2Body* mouse_body;
-	b2Body* ground;
+	Atmosphere atmosphere;
+
+	void UpdateBody(PhysBody* body);
+
+	double CalculateSpeed(double dx, double dy);
 };

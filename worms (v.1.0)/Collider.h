@@ -11,23 +11,10 @@ struct Collider
 {
 	enum Type
 	{
-		NONE = -1,
-		WALL,
-		ORB,
-		YELLOW_FLOWER,
-		RED_FLOWER,
-		STRUCTURE,
 		PLAYER,
+		BULLET,
 		ENEMY,
-		PLAYER_SHOT,
-		ENEMY_SHOT,
-		BOMB,
-		EXPLOSION,
-		WIN,
-		NEXT,
-		MAX,
-		POWER_UP,
-		BOUNDS
+		MAX
 	};
 
 	//Methods
@@ -35,8 +22,8 @@ struct Collider
 
 	void SetPos(int x, int y);
 
-	iPoint GetPos() { return iPoint {rect.x,rect.y}; }
-	
+	iPoint GetPos() { return iPoint{ rect.x,rect.y }; }
+
 	bool Intersects(const SDL_Rect& r) const;
 
 	void AddListener(Module* listener);
@@ -50,4 +37,3 @@ struct Collider
 
 
 #endif // !__COLLIDER_H__
-

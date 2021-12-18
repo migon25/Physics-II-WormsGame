@@ -4,6 +4,7 @@
 
 class Application;
 class PhysBody;
+class Collider;
 
 class Module
 {
@@ -73,6 +74,10 @@ public:
 	}
 
 	virtual void OnCollision(PhysBody* bodyA, PhysBody* bodyB)
+	{
+	}
+
+	virtual void OnCollision(Collider* colA, Collider* colB)
 	{
 	}
 };

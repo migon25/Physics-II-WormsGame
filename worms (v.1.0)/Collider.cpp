@@ -1,6 +1,6 @@
 #include "Collider.h"
 
-Collider::Collider(SDL_Rect rectangle, Type type, Module* listener): rect(rectangle), type(type)
+Collider::Collider(SDL_Rect rectangle, Type type, Module* listener) : rect(rectangle), type(type)
 {
 	listeners[0] = listener;
 }
@@ -14,9 +14,9 @@ void Collider::SetPos(int x, int y)
 bool Collider::Intersects(const SDL_Rect& r) const
 {
 	return (rect.x < r.x + r.w &&
-			rect.x + rect.w > r.x &&
-			rect.y < r.y + r.h &&
-			rect.h + rect.y > r.y);
+		rect.x + rect.w > r.x &&
+		rect.y < r.y + r.h &&
+		rect.h + rect.y > r.y);
 }
 
 void Collider::AddListener(Module* listener)

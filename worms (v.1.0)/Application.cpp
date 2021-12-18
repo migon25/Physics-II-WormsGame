@@ -11,6 +11,7 @@
 #include "GameOver.h"
 #include "GameScene.h"
 #include "FadeToBlack.h"
+#include "ModuleCollisions.h"
 
 #include "Application.h"
 #include <time.h>
@@ -27,7 +28,8 @@ Application::Application()
 	sceneIntro = new SceneIntro(this, false);
 	gameOver = new GameOver(this, false);
 	gameScene = new GameScene(this,true);
-	physics = new ModulePhysics(this, false);
+	physics = new ModulePhysics(this, true);
+	collisions = new ModuleCollisions(this, true);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -36,6 +38,7 @@ Application::Application()
 	// Main Modules
 	AddModule(window);
 	AddModule(physics);
+	AddModule(collisions);
 	AddModule(renderer);
 	AddModule(textures);
 	AddModule(input);

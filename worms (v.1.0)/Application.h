@@ -15,6 +15,7 @@ class SceneIntro;
 class GameOver;
 class ModulePhysics;
 class FadeToBlack;
+class ModuleCollisions;
 
 class Application
 {
@@ -30,6 +31,7 @@ public:
 	GameOver* gameOver;
 	ModulePhysics* physics;
 	FadeToBlack* fadeToBlack;
+	ModuleCollisions* collisions;
 
 private:
 

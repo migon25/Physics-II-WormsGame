@@ -11,7 +11,7 @@ class ModuleCollisions : public Module
 public:
 	// Constructor
 	// Fills all collision matrix data
-	ModuleCollisions(bool startEnabled);
+	ModuleCollisions(Application* app, bool start_enabled = true);
 
 	// Destructor
 	~ModuleCollisions();
@@ -19,15 +19,15 @@ public:
 	// Called at the beginning of the application loop
 	// Removes all colliders pending to delete
 	// Checks for new collisions and calls its listeners
-	Update_Status PreUpdate();
+	update_status PreUpdate();
 
 	// Called at the middle of the application loop
 	// Switches the debug mode on/off
-	Update_Status Update();
+	update_status Update();
 
 	// Called at the end of the application loop
 	// Draw all colliders (if debug mode is enabled)
-	Update_Status PostUpdate();
+	update_status PostUpdate();
 
 	// Removes all existing colliders
 	bool CleanUp();
