@@ -16,14 +16,22 @@ ModuleCollisions::ModuleCollisions(Application* app, bool start_enabled) : Modul
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::PLAYER][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::ENEMY][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::BULLET][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::BULLET][Collider::Type::NONE] = true;
+
+	matrix[Collider::Type::NONE][Collider::Type::NONE] = true;
+	matrix[Collider::Type::NONE][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::NONE][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::NONE][Collider::Type::BULLET] = true;
 }
 
 // Destructor
@@ -114,6 +122,9 @@ void ModuleCollisions::DebugDraw()
 			break;
 		case Collider::Type::ENEMY: // red
 			App->renderer->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
+			break;
+		case Collider::Type::NONE: // white
+			App->renderer->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
 		}
 	}

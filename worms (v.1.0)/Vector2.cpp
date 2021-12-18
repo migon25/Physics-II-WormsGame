@@ -58,6 +58,16 @@ Vector2 operator+(const Vector2 & v1, const Vector2 & v2)
 	return v;
 }
 
+Vector2 operator-(const Vector2 & v1, const Vector2 & v2)
+{
+	Vector2 v;
+
+	v.x = v1.x - v2.x;
+	v.y = v1.y - v2.y;
+
+	return v;
+}
+
 Vector2 operator+(const Vector2 & v, double s)
 {
 	Vector2 vec;

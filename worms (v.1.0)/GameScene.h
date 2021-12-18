@@ -19,4 +19,5 @@ public:
 	double CalculateSpeed(double dx, double dy);
 public:
 	PhysBody* ball;
+	PhysBody* ground;
 };

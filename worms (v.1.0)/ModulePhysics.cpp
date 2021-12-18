@@ -9,6 +9,8 @@
 #include <cmath>
 #include "Collider.h"
 
+#include <iostream>
+
 ModulePhysics::ModulePhysics(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
 	for (uint i = 0; i < MAX_PHYSICS_BODIES; ++i)
@@ -96,6 +98,7 @@ PhysBody * ModulePhysics::CreatePhysBody(SDL_Rect rect, Collider::Type type, Mod
 
 	pbody->velocity = { 0, 0 };
 
+	pbody->mass = 0.0;
 	pbody->surface = 0.0;
 
 	pbody->gravityScale = 1;
@@ -124,7 +127,71 @@ PhysBody * ModulePhysics::CreatePhysBody(int x, int y, int width, int height, Co
 
 void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 {
+	PhysBody* pbodyA = nullptr;
+	PhysBody* pbodyB = nullptr;
 
+	// Find physicbodies
+	for (int i = 0; i < MAX_PHYSICS_BODIES; i++) {
+		if (physicsBodies[i]->collider == colA) {
+			pbodyA = physicsBodies[i];
+		}
+		else if (physicsBodies[i]->collider == colB) {
+			pbodyB = physicsBodies[i];
+		}
+
+		if (pbodyA && pbodyB) {
+			break;
+		}
+	}
+
+	if (!pbodyA->physics_enabled) return;
+
+	if (!colA->isSensor) {
+		//-- Collision resolve
+		Vector2 diff = pbodyB->position - pbodyA->position;
+		int colWidth, colHeight;
+
+		// Calculate collision box
+		if (diff.x > 0) {
+			colWidth = pbodyA->collider->rect.w - diff.x;
+		}
+		else {
+			colWidth = pbodyB->collider->rect.w + diff.x;
+		}
+
+		if (diff.y > 0) {
+			colHeight = pbodyA->collider->rect.h - diff.y;
+		}
+		else {
+			colHeight = pbodyB->collider->rect.h + diff.y;
+		}
+
+		// Reposition object
+		if (colWidth < colHeight) {
+			// Reposition by X-axis
+			if (diff.x > 0) {
+				pbodyA->position.x += colWidth;
+			}
+			else {
+				pbodyA->position.x -= colWidth;
+			}
+
+			pbodyA->velocity.x = -pbodyA->velocity.x;
+		}
+		else {
+			// Reposition by Y-axis
+			if (diff.y > 0) {
+				pbodyA->position.y -= colHeight;
+			}
+			else {
+				pbodyA->position.y += colHeight;
+			}
+
+			pbodyA->velocity.y = -pbodyA->velocity.y;
+		}
+
+		pbodyA->collider->SetPos(pbodyA->position.x, pbodyA->position.y);
+	}
 }
 
 void ModulePhysics::UpdateBody(PhysBody * body)
@@ -168,17 +235,41 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	// You can also move this code into a subroutine: integrator_velocity_verlet(ball, dt);
 	float dt = App->deltaTime;
 
-	body->position.x += body->velocity.x * dt + 0.5 * body->acceleration.x * dt * dt;
-	body->position.y += body->velocity.y * dt + 0.5 * body->acceleration.y * dt * dt;
+	body->lastMoveStep.x = body->velocity.x * dt + 0.5 * body->acceleration.x * dt * dt;
+	body->lastMoveStep.y = body->velocity.y * dt + 0.5 * body->acceleration.y * dt * dt;
+
+	body->position.x += body->lastMoveStep.x;
+	body->position.y += body->lastMoveStep.y;
 	body->velocity.x += body->acceleration.x * dt;
 	body->velocity.y += body->acceleration.y * dt;
 
-	// Step #4: solve collisions
-	if (body->position.y > SCREEN_HEIGHT - 50)
-	{
-		// For now, just stop the ball when it reaches the ground.
-		body->physics_enabled = false;
+	body->collider->SetPos(body->position.x, body->position.y);
+}
+
+Direction ModulePhysics::GetCollisionDirection(Vector2 difference)
+{
+	difference.Normalize();
+
+	Vector2 compass[] = {
+		Vector2(0.0, 1.0),
+		Vector2(1.0, 0.0),
+		Vector2(0.0, -1.0),
+		Vector2(-1.0, 0.0)
+	};
+
+	double max = 0.0;
+
+	int best_match = -1;
+
+	for (int i = 0; i < 4; i++) {
+		double dp = Dot(difference, compass[i]);
+		if (dp > max) {
+			max = dp;
+			best_match = i;
+		}
 	}
+
+	return Direction(best_match);
 }
 
 double ModulePhysics::CalculateSpeed(double dx, double dy)
@@ -192,6 +283,15 @@ void PhysBody::GetPosition(int& x, int &y) const
 {
 	x = collider->rect.x;
 	y = collider->rect.y;
+}
+
+void PhysBody::SetPosition(int _x, int _y)
+{
+	position.x = _x;
+	position.y = _y;
+
+	collider->rect.x = _x;
+	collider->rect.y = _y;
 }
 
 void PhysBody::Remove()

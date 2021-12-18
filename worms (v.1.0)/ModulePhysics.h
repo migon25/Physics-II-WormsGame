@@ -19,6 +19,13 @@
 
 #define MAX_PHYSICS_BODIES 350
 
+enum class Direction {
+	UP,
+	RIGHT,
+	DOWN,
+	LEFT
+};
+
 // Small class to return to other modules to track position and rotation of physics bodies
 struct PhysBody
 {
@@ -35,6 +42,8 @@ struct PhysBody
 	// Force (total) applied to the ball
 	Vector2 totalForce;
 
+	Vector2 lastMoveStep;
+
 	// Mass
 	double mass;
 
@@ -48,6 +57,7 @@ struct PhysBody
 	double frictionForce;
 
 	void GetPosition(int& x, int &y) const;
+	void SetPosition(int x, int y);
 	void Remove();
 
 	bool pendingToDelete;
@@ -87,5 +97,6 @@ private:
 
 	void UpdateBody(PhysBody* body);
 
+	Direction GetCollisionDirection(Vector2 difference);
 	double CalculateSpeed(double dx, double dy);
 };

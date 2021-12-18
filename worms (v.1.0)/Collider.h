@@ -11,6 +11,7 @@ struct Collider
 {
 	enum Type
 	{
+		NONE,
 		PLAYER,
 		BULLET,
 		ENEMY,
@@ -31,6 +32,7 @@ struct Collider
 	//Variables
 	SDL_Rect rect;
 	bool pendingToDelete = false;
+	bool isSensor = false;
 	Type type;
 	Module* listeners[MAX_LISTENERS] = { nullptr };
 };

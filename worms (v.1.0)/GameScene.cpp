@@ -29,12 +29,16 @@ bool GameScene::Start()
 
 	App->physics->SetAtmosphere(-10.0, 0, 0.00001);
 
-	ball = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 0, 100, 100, Collider::Type::BULLET, this);
+	ball = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 0, 10, 10, Collider::Type::BULLET, this);
 
 	ball->mass = 10; // kg
 	ball->surface = 2; // m^2
 	ball->dragCoefficient = -0.4;
 	ball->liftCoefficient = 1.2;
+
+	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50, Collider::Type::NONE, this);
+
+	ground->physics_enabled = false;
 
 	return ret;
 }
@@ -53,7 +57,19 @@ update_status GameScene::Update()
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
 
 	// Render
-	App->renderer->DrawCircle(ball->position.x, ball->position.y, 5, 255, 255, 0, 255);
+	App->renderer->DrawQuad(ball->collider->rect, 255, 255, 0, 255);
+
+	App->renderer->DrawQuad(ground->collider->rect, 255, 255, 255, 255);
+
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+		SDL_Rect rect;
+		rect.x = App->input->GetMouseX();
+		rect.y = App->input->GetMouseY();
+		rect.w = 50;
+		rect.h = 50;
+		PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
+		pb->physics_enabled = false;
+	}
 
 	return UPDATE_CONTINUE;
 }
