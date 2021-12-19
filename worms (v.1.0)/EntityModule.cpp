@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Collider.h"
 #include "Grenade.h"
+#include "IceCube.h"
 #include "Box.h"
 
 #include <iostream>
@@ -103,6 +104,9 @@ Entity* EntityModule::AddEntity(EntityType type, Vector2 position)
 		break;
 	case EntityType::ET_BOX:
 		entity = new Box(App);
+		break;
+	case EntityType::ET_ICECUBE:
+		entity = new IceCube(App);
 		break;
 	}
 

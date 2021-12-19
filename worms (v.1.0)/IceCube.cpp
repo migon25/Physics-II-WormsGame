@@ -1,49 +1,49 @@
-#include "Grenade.h"
+#include "IceCube.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 
-Grenade::Grenade(Application* app) : Entity(app)
+IceCube::IceCube(Application* app) : Entity(app)
 {
 }
 
 
-Grenade::~Grenade()
+IceCube::~IceCube()
 {
 }
 
-void Grenade::Init(Module * module)
+void IceCube::Init(Module* module)
 {
-	rect = { 141,435,8,8 };
+	rect = { 153,346,6,8 };
 
 	texture = App->textures->Load("Assets/worms.png");
 
 	SDL_Rect pbodyRect;
 	pbodyRect.x = position.x;
 	pbodyRect.y = position.y;
-	pbodyRect.w = 8;
-	pbodyRect.h = 8;
+	pbodyRect.w = 10;
+	pbodyRect.h = 10;
 
 	entityBody = App->physics->CreatePhysBody(pbodyRect, Collider::Type::BULLET, module);
-	entityBody->mass = 80;
-	entityBody->frictionCoefficient = 1.0;
-	entityBody->restitutionCoefficient = 0.1;
+	entityBody->mass = 30;
+	entityBody->frictionCoefficient = 0.3;
+	entityBody->restitutionCoefficient = 0.5;
 	entityBody->physics_enabled = true;
 
-	type = EntityModule::EntityType::ET_GRENADE;
+	type = EntityModule::EntityType::ET_ICECUBE;
 }
 
-void Grenade::Update(float dt)
+void IceCube::Update(float dt)
 {
 }
 
-void Grenade::Render()
+void IceCube::Render()
 {
 	App->renderer->Blit(texture, entityBody->position.x, entityBody->position.y, &rect);
 }
 
-void Grenade::Die()
+void IceCube::Die()
 {
 	Entity::Remove();
 }

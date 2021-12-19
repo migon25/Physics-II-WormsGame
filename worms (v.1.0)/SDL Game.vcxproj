@@ -80,6 +80,7 @@
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Grenade.h" />
+    <ClInclude Include="IceCube.h" />
     <ClInclude Include="ModuleCollisions.h" />
     <ClInclude Include="ModuleFonts.h" />
     <ClInclude Include="ModulePhysics.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="FadeToBlack.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Grenade.cpp" />
+    <ClCompile Include="IceCube.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />

@@ -18,30 +18,42 @@ ModuleCollisions::ModuleCollisions(Application* app, bool start_enabled) : Modul
 	matrix[Collider::Type::PLAYER][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::NONE] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::ICECUBE] = true;
 
 	matrix[Collider::Type::TARGET][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::TARGET][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::TARGET][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::TARGET][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::TARGET][Collider::Type::NONE] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::ICECUBE] = true;
 
 	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::NONE] = true;
+	matrix[Collider::Type::BULLET][Collider::Type::ICECUBE] = true;
+
+	matrix[Collider::Type::ICECUBE][Collider::Type::ICECUBE] = false;
+	matrix[Collider::Type::ICECUBE][Collider::Type::GROUND] = false;
+	matrix[Collider::Type::ICECUBE][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::ICECUBE][Collider::Type::TARGET] = true;
+	matrix[Collider::Type::ICECUBE][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::ICECUBE][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::NONE][Collider::Type::NONE] = true;
 	matrix[Collider::Type::NONE][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::NONE][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::NONE][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::NONE][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::NONE][Collider::Type::ICECUBE] = true;
 
 	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::NONE] = true;
+	matrix[Collider::Type::GROUND][Collider::Type::ICECUBE] = true;
 
 }
 

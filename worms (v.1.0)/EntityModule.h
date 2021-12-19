@@ -11,7 +11,9 @@ class EntityModule : public Module
 {
 public:
 	enum class EntityType {
+		ET_ENEMY,
 		ET_GRENADE,
+		ET_ICECUBE,
 		ET_BOX,
 		ET_LAST
 	};
