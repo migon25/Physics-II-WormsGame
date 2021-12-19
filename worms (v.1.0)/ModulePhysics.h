@@ -104,6 +104,7 @@ public:
 
 	void SetAtmosphere(double _windX, double _windY, double _density) { atmosphere.windx = _windX; atmosphere.windy = _windY; atmosphere.density = _density; };
 	void SetVelocityIntegrator(VelocityIntegrator velocity_integrator);
+	VelocityIntegrator GetVelocityIntegrator() { return velocityIntegrator; }
 private:
 	VelocityIntegrator velocityIntegrator;
 

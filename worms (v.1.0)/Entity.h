@@ -33,7 +33,7 @@ public:
 	~Entity();
 
 	virtual void Init(Module* module){}
-	virtual void Update(float dt){}
+	virtual void Update(float dt) { position = entityBody->position; }
 	virtual void Render(){}
 
 	void SetPosition(Vector2 pos) { position = pos; }

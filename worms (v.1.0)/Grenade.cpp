@@ -35,10 +35,14 @@ void Grenade::Init(Module * module)
 
 	time = 5.0f;
 	timer = 0.0f;
+
+	distanceExplosion = 10.0;
 }
 
 void Grenade::Update(float dt)
 {
+	Entity::Update(dt);
+
 	timer += dt;
 
 	if (timer >= time) {
@@ -55,5 +59,12 @@ void Grenade::Die()
 {
 	Entity::Die();
 
-	//App->entityModule->AddEntity()
+	p2List<Entity*> closestList = App->entityModule->GetEntitiesInRadius(this, distanceExplosion);
+
+	p2List_item<Entity*>* entity = closestList.getFirst();
+
+	while (entity) {
+		entity->data->Die();
+		entity = entity->next;
+	}
 }

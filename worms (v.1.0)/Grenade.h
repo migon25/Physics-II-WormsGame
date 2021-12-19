@@ -6,6 +6,8 @@ class Grenade : public Entity
 private:
 	float timer;
 	float time;
+
+	double distanceExplosion;
 public:
 	Grenade(Application* app);
 	~Grenade();

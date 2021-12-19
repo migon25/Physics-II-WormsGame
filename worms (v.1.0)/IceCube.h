@@ -3,6 +3,9 @@
 
 class IceCube : public Entity
 {
+private:
+	float timer;
+	float time;
 public:
 	IceCube(Application* app);
 	~IceCube();
@@ -10,6 +13,4 @@ public:
 	void Init(Module* module) override;
 	void Update(float dt) override;
 	void Render() override;
-
-	void Die() override;
 };

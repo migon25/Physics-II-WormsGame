@@ -128,3 +128,26 @@ int EntityModule::GetEntityCount(EntityType type)
 {
 	return entityCount[(int)type];
 }
+
+p2List<Entity*> EntityModule::GetEntitiesInRadius(Entity* ent, double radius)
+{
+	p2List<Entity*> list;
+
+	p2List_item<Entity*>* entity = entities.getFirst();
+
+	while (entity) {
+		if (entity->data != ent) {
+
+			Vector2 diff = entity->data->GetPosition() - ent->GetPosition();
+			double dist = diff.Magnitude();
+
+			if (dist < radius) {
+				list.add(entity->data);
+			}
+		}
+
+		entity = entity->next;
+	}
+
+	return list;
+}

@@ -32,18 +32,23 @@ void IceCube::Init(Module* module)
 	entityBody->physics_enabled = true;
 
 	type = EntityModule::EntityType::ET_ICECUBE;
+
+	timer = 0.0f;
+	time = 1.5f;
 }
 
 void IceCube::Update(float dt)
 {
+	Entity::Update(dt);
+
+	timer >= dt;
+
+	if (timer >= time) {
+		Die();
+	}
 }
 
 void IceCube::Render()
 {
 	App->renderer->Blit(texture, entityBody->position.x, entityBody->position.y, &rect);
-}
-
-void IceCube::Die()
-{
-	Entity::Remove();
 }
