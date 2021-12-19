@@ -49,6 +49,7 @@ public:
 	int numBoxes;
 	int numIce;
 	int fonts;
+	int veloInteg;
 
 private:
 };

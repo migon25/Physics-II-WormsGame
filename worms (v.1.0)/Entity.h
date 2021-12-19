@@ -51,4 +51,6 @@ public:
 	Vector2 GetPosition() { return position; }
 
 	void Impulse(Vector2 impulse);
+
+	virtual void OnCollision(Entity* other){}
 };

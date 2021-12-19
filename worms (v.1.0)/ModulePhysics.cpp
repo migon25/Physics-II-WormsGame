@@ -144,6 +144,8 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 
 	// Find physicbodies
 	for (int i = 0; i < MAX_PHYSICS_BODIES; i++) {
+		if (physicsBodies[i] == nullptr) continue;
+
 		if (physicsBodies[i]->collider == colA) {
 			pbodyA = physicsBodies[i];
 		}
