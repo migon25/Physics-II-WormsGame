@@ -38,5 +38,6 @@ Special features:
 There is an aim that moves to where your curser would be, the weapons shot will be flying that direction. 
 Weapons include ice cubes, missiles and grenades.
 Player has to target boxes and enemies.
+Gravity, acceleration, drag, friction, collision solver, lift, impulse and player movement are coded.
  
 Some of the bugs encountered:
