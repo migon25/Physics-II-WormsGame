@@ -42,6 +42,8 @@ public:
 
 	double maxForce;
 	double minForce;
+
+	double jumpForce;
 private:
 	void Shoot();
 };

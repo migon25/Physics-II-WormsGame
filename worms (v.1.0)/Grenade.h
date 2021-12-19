@@ -3,6 +3,9 @@
 
 class Grenade : public Entity
 {
+private:
+	float timer;
+	float time;
 public:
 	Grenade(Application* app);
 	~Grenade();

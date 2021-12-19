@@ -52,6 +52,8 @@ bool ModulePlayer::Start()
 	grenadeForce = minForce;
 	grenadeOffset = 20.0;
 
+	jumpForce = 200;
+
 	return true;
 }
 
@@ -101,7 +103,7 @@ update_status ModulePlayer::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		playerBody->Impulse(0, -100);
+		playerBody->Impulse(0, -jumpForce);
 	}
 
 	if (App->input->GetMouseButton(1) == KEY_REPEAT) {
