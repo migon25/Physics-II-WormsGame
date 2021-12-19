@@ -97,6 +97,9 @@ update_status GameScene::Update()
 	// Instant Loss
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
 
+	numEnemies = App->entityModule->entityCount[0];
+	numGren = App->entityModule->entityCount[1];
+	numBoxes = App->entityModule->entityCount[3];
 	// Numbers display
 	if (App->collisions->debug == true)
 	{

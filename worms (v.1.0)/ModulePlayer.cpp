@@ -50,6 +50,9 @@ bool ModulePlayer::Start()
 	maxForce = 250;
 	minForce = 150;
 	grenadeForce = minForce;
+
+	iceForce = minForce;
+
 	grenadeOffset = 20.0;
 
 	jumpForce = 200;
@@ -81,6 +84,22 @@ void ModulePlayer::Shoot()
 	entity->Impulse(grenadeImpulse);
 }
 
+void ModulePlayer::ShootCubes()
+{
+	int mouseX = App->input->GetMouseX();
+	int mouseY = App->input->GetMouseY();
+	Vector2 mousePos(mouseX, mouseY);
+
+	Vector2 diff = mousePos - playerBody->position;
+	diff.Normalize();
+
+	Vector2 grenadePos = playerBody->position + (diff * grenadeOffset);
+	Vector2 grenadeImpulse = diff * iceForce;
+
+	Entity* entity = App->entityModule->AddEntity(EntityModule::EntityType::ET_ICECUBE, grenadePos);
+	entity->Impulse(grenadeImpulse);
+}
+
 // Update: draw background
 update_status ModulePlayer::Update()
 {
@@ -104,6 +123,14 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		playerBody->Impulse(0, -jumpForce);
+	}
+
+	if (App->input->GetMouseButton(3) == KEY_REPEAT) {
+		iceForce ++;
+	}
+	if (App->input->GetMouseButton(3) == KEY_UP) {
+		ShootCubes();
+		iceForce = minForce;
 	}
 
 	if (App->input->GetMouseButton(1) == KEY_REPEAT) {

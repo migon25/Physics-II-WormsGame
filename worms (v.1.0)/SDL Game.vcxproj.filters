@@ -23,6 +23,9 @@
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="SceneIntro.cpp" />
     <ClCompile Include="Vector2.cpp" />
+
+    <ClCompile Include="IceCube.cpp" />
+
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -51,5 +54,7 @@
     <ClInclude Include="p2Point.h" />
     <ClInclude Include="SceneIntro.h" />
     <ClInclude Include="Vector2.h" />
+    <ClInclude Include="IceCube.h" />
+
   </ItemGroup>
 </Project>

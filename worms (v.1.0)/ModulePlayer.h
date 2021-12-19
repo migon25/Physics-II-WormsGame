@@ -40,10 +40,13 @@ public:
 	double grenadeOffset;
 	double grenadeForce;
 
+	double iceForce;
+
 	double maxForce;
 	double minForce;
 
 	double jumpForce;
 private:
 	void Shoot();
+	void ShootCubes();
 };

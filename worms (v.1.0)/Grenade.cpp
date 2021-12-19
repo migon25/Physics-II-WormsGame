@@ -15,20 +15,20 @@ Grenade::~Grenade()
 
 void Grenade::Init(Module * module)
 {
-	rect = { 153,346,6,8 };
+	rect = { 141,435,8,8 };
 
 	texture = App->textures->Load("Assets/worms.png");
 
 	SDL_Rect pbodyRect;
 	pbodyRect.x = position.x;
 	pbodyRect.y = position.y;
-	pbodyRect.w = 10;
-	pbodyRect.h = 10;
+	pbodyRect.w = 8;
+	pbodyRect.h = 8;
 
 	entityBody = App->physics->CreatePhysBody(pbodyRect, Collider::Type::BULLET, module);
-	entityBody->mass = 30;
-	entityBody->frictionCoefficient = 0.5;
-	entityBody->restitutionCoefficient = 0.5;
+	entityBody->mass = 80;
+	entityBody->frictionCoefficient = 1.0;
+	entityBody->restitutionCoefficient = 0.1;
 	entityBody->physics_enabled = true;
 
 	type = EntityModule::EntityType::ET_GRENADE;
