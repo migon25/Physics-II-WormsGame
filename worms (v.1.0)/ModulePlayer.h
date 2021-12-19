@@ -26,4 +26,6 @@ public:
 	//for the body
 	SDL_Rect wormRect;
 
+	int prevPos;
+
 };

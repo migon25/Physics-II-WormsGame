@@ -20,15 +20,15 @@ bool ModulePlayer::Start()
 	LOG("Loading player");
 
 	wormRect.x = SCREEN_WIDTH / 5;
-	wormRect.y = 100;
+	wormRect.y = 350;
 	wormRect.w = 8;
 	wormRect.h = 13;
 	playerBody = App->physics->CreatePhysBody(wormRect, Collider::Type::PLAYER, this);
 
 	playerBody->mass = 10; // kg
 	playerBody->surface = 2; // m^2
-	playerBody->dragCoefficient = -0.4;
-	playerBody->liftCoefficient = 1.2;
+	playerBody->dragCoefficient = 0.0;
+	playerBody->liftCoefficient = 0.0;
 	playerBody->frictionCoefficient = 1.0;
 
 	wormAnim.PushBack({ 8,7,8,13 });
@@ -49,9 +49,29 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update()
 {
 	wormText = wormAnim.GetCurrentFrame();
-	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText,false,1.0,SDL_FLIP_HORIZONTAL);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) playerBody->position.x += 2;
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) playerBody->position.x -= 2;
+	
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
+	{
+		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+		playerBody->position.x += 1;
+		prevPos = playerBody->position.x - 1;
+	} 
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
+	{
+		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);
+		playerBody->position.x -= 1;
+		prevPos = playerBody->position.x + 1;
+	}
+	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+	{
+		playerBody->velocity.y -= 50;
+	}
+
+	if ((App->input->GetKey(SDL_SCANCODE_A) == false) && (App->input->GetKey(SDL_SCANCODE_D) == false))
+	{
+		if (playerBody->position.x < prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);;
+		if (playerBody->position.x > prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+	}
 
 	return UPDATE_CONTINUE;
 }
