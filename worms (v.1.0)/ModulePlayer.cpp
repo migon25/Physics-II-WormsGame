@@ -31,8 +31,17 @@ bool ModulePlayer::Start()
 	playerBody->liftCoefficient = 0.0;
 	playerBody->frictionCoefficient = 0.0;
 
-	wormAnim.PushBack({ 8,7,8,13 });
+	wormIdle.PushBack({ 8,7,8,13 });
+	wormIdle.loop = false;
+
+	wormWalk.PushBack({ 8,7,8,13 });
+	wormWalk.PushBack({ 19,7,8,13 });
+	wormWalk.loop = true;
+	wormWalk.speed = 0.05f;
+
 	worm = App->textures->Load("Assets/worms.png");
+
+	currentWormAnim = &wormIdle;
 
 	return true;
 }
@@ -48,16 +57,18 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	wormText = wormAnim.GetCurrentFrame();
+	wormText = currentWormAnim->GetCurrentFrame();
 	
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
+		currentWormAnim = &wormWalk;
 		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
 		playerBody->position.x += 1;
 		prevPos = playerBody->position.x - 1;
 	} 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
+		currentWormAnim = &wormWalk;
 		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);
 		playerBody->position.x -= 1;
 		prevPos = playerBody->position.x + 1;
@@ -69,9 +80,12 @@ update_status ModulePlayer::Update()
 
 	if ((App->input->GetKey(SDL_SCANCODE_A) == false) && (App->input->GetKey(SDL_SCANCODE_D) == false))
 	{
+		currentWormAnim = &wormIdle;
 		if (playerBody->position.x < prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);;
 		if (playerBody->position.x > prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
 	}
+
+	currentWormAnim->Update();
 
 	return UPDATE_CONTINUE;
 }
