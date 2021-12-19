@@ -39,9 +39,20 @@ bool ModulePlayer::Start()
 	wormWalk.loop = true;
 	wormWalk.speed = 0.05f;
 
+	speedometer.PushBack({ 7,483,28,16 });
+	speedometer.PushBack({ 41,483,28,16 });
+	speedometer.PushBack({ 75,483,28,16 });
+	speedometer.PushBack({ 108,483,28,16 });
+	speedometer.PushBack({ 142,483,28,16 });
+	speedometer.PushBack({ 175,483,28,16 });
+	speedometer.loop = true;
+	speedometer.speed = 0.15f;
+
+
 	worm = App->textures->Load("Assets/worms.png");
 
 	currentWormAnim = &wormIdle;
+	currentSpeedometerAnim = &speedometer;
 
 	return true;
 }
@@ -85,6 +96,11 @@ update_status ModulePlayer::Update()
 		if (playerBody->position.x > prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
 	}
 
+	speed = currentSpeedometerAnim->GetCurrentFrame();
+
+	App->renderer->Blit(worm, 10, 10, &speed);
+
+	currentSpeedometerAnim->Update();
 	currentWormAnim->Update();
 
 	return UPDATE_CONTINUE;

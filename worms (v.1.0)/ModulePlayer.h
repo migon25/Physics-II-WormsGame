@@ -22,14 +22,17 @@ public:
 	SDL_Texture* worm;
 
 	Animation* currentWormAnim = nullptr;
+	Animation* currentSpeedometerAnim = nullptr;
 
 	Animation wormIdle;
 	Animation wormWalk;
+	Animation speedometer;
 
 	SDL_Rect wormText;
 
 	//for the body
 	SDL_Rect wormRect;
+	SDL_Rect speed;
 
 	int prevPos;
 
