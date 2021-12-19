@@ -125,7 +125,7 @@ update_status ModulePlayer::Update()
 	}
 
 	if (App->input->GetMouseButton(3) == KEY_REPEAT) {
-		iceForce += 2500;
+		iceForce ++;
 	}
 	if (App->input->GetMouseButton(3) == KEY_UP) {
 		ShootCubes();
