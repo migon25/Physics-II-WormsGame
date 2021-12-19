@@ -40,6 +40,7 @@ bool GameScene::Start()
 	target->dragCoefficient = -0.4;
 	target->liftCoefficient = 1.2;
 	target->frictionCoefficient = 1.0;
+	target->restitutionCoefficient = 1.0;
 
 	// Ground
 	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 150, Collider::Type::GROUND, this);
@@ -76,6 +77,7 @@ update_status GameScene::Update()
 		PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
 		pb->mass = 30;
 		pb->frictionCoefficient = 0.5;
+		pb->restitutionCoefficient = 0.5;
 		pb->physics_enabled = true;
 	}
 

@@ -110,10 +110,12 @@ PhysBody * ModulePhysics::CreatePhysBody(SDL_Rect rect, Collider::Type type, Mod
 	pbody->dragCoefficient = 0.0;
 	pbody->frictionCoefficient = 0.0;
 	pbody->liftCoefficient = 0.0;
+	pbody->restitutionCoefficient = 0.0;
 
 	pbody->physics_enabled = true;
 
-	pbody->frictioning = false;
+	pbody->oncontact = false;
+	pbody->impulse = false;
 
 	pbody->pendingToDelete = false;
 	
@@ -197,7 +199,7 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 			pbodyA->velocity.y = -pbodyA->velocity.y;
 		}
 
-		pbodyA->frictioning = true;
+		pbodyA->oncontact = true;
 
 		pbodyA->collider->SetPos(pbodyA->position.x, pbodyA->position.y);
 	}
@@ -209,9 +211,10 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	body->totalForce = { 0.0, 0.0 };
 	body->acceleration = { 0.0, 0.0 };
 
-	if (body->frictioning) {
-		body->velocity *= body->frictionCoefficient;
-		body->frictioning = false;
+	if (body->oncontact) {
+		body->velocity.x *= body->frictionCoefficient;
+		body->velocity.y *= body->restitutionCoefficient;
+		body->oncontact = false;
 	}
 
 	// Step #1: Compute forces
@@ -236,6 +239,11 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	// Add gravity force to the total accumulated force of the ball
 	body->totalForce.x += fdx;
 	body->totalForce.y += fdy;
+
+	if (body->impulse) {
+		body->totalForce += body->impulseForce;
+		body->impulse = false;
+	}
 
 	// Other forces
 	// ...
@@ -306,6 +314,12 @@ void PhysBody::SetPosition(int _x, int _y)
 
 	collider->rect.x = _x;
 	collider->rect.y = _y;
+}
+
+void PhysBody::Impulse(double x, double y)
+{
+	impulse = true;
+	impulseForce = { x, y };
 }
 
 void PhysBody::Remove()

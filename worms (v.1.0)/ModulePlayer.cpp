@@ -30,6 +30,7 @@ bool ModulePlayer::Start()
 	playerBody->dragCoefficient = 0.0;
 	playerBody->liftCoefficient = 0.0;
 	playerBody->frictionCoefficient = 0.0;
+	playerBody->restitutionCoefficient = 0.0;
 
 	wormAnim.PushBack({ 8,7,8,13 });
 	worm = App->textures->Load("Assets/worms.png");
@@ -64,7 +65,7 @@ update_status ModulePlayer::Update()
 	}
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		playerBody->velocity.y -= 50;
+		playerBody->Impulse(0, -50000);
 	}
 
 	if ((App->input->GetKey(SDL_SCANCODE_A) == false) && (App->input->GetKey(SDL_SCANCODE_D) == false))

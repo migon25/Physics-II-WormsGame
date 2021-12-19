@@ -21,6 +21,7 @@ public:
 double Dot(const Vector2& v1, const Vector2& v2);
 
 void operator*=(Vector2& v1, double s);
+void operator+=(Vector2& v1, const Vector2& v2);
 
 Vector2 operator+(const Vector2& v1, const Vector2& v2);
 Vector2 operator-(const Vector2& v1, const Vector2& v2);
