@@ -90,7 +90,7 @@ bool ModuleRender::CleanUp()
 }
 
 // Blit to screen
-bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y )
+bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed, double angle, SDL_RendererFlip flip, int pivot_x, int pivot_y )
 {
 	bool ret = true;
 	SDL_Rect rect;
@@ -120,7 +120,7 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;
@@ -208,20 +208,20 @@ bool ModuleRender::DrawCircle(int x, int y, int radius, Uint8 r, Uint8 g, Uint8 
 	return ret;
 }
 
-bool ModuleRender::DrawNumber(int number, int x, int y, int digitCount, SDL_Texture * numberTex, int width, int height)
-{
-	bool ret = true;
-
-	SDL_Rect rect = { 0, 0, width, height };
-	int digits = pow(10, digitCount - 1);
-	for (int i = 0; i < digitCount; i++) {
-		int d = number / digits;
-
-		rect.x = d * width;
-		ret = App->renderer->Blit(numberTex, x + (width * i), y, &rect);
-		number = number % digits;
-		digits /= 10;
-	}
-
-	return ret;
-}
+//bool ModuleRender::DrawNumber(int number, int x, int y, int digitCount, SDL_Texture * numberTex, int width, int height)
+//{
+//	bool ret = true;
+//
+//	SDL_Rect rect = { 0, 0, width, height };
+//	int digits = pow(10, digitCount - 1);
+//	for (int i = 0; i < digitCount; i++) {
+//		int d = number / digits;
+//
+//		rect.x = d * width;
+//		ret = App->renderer->Blit(numberTex, x + (width * i), y, &rect,1.0);
+//		number = number % digits;
+//		digits /= 10;
+//	}
+//
+//	return ret;
+//}
