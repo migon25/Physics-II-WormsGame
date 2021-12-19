@@ -35,6 +35,7 @@ bool GameScene::Start()
 	LOG("Loading Intro assets");
 	bool ret = true;
 
+	App->audio->PlayMusic("Assets/wormsThemeSong.wav");
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
 	// Fonts
