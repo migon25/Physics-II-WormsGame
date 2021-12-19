@@ -48,11 +48,7 @@ update_status ModulePhysics::PreUpdate()
 		}
 	}
 
-	return UPDATE_CONTINUE;
-}
-
-update_status ModulePhysics::Update()
-{
+	// Update physics
 	for (uint i = 0; i < MAX_PHYSICS_BODIES; ++i)
 	{
 		if (physicsBodies[i] != nullptr)
@@ -63,6 +59,11 @@ update_status ModulePhysics::Update()
 		}
 	}
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModulePhysics::Update()
+{
 	return UPDATE_CONTINUE;
 }
 
@@ -175,11 +176,11 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 		// Reposition object
 		if (colWidth < colHeight) {
 			// Reposition by X-axis
-			if (diff.x > 0) {
-				pbodyA->position.x += colWidth;
+ 			if (diff.x > 0) {
+				pbodyA->position.x -= colWidth;
 			}
 			else {
-				pbodyA->position.x -= colWidth;
+				pbodyA->position.x += colWidth;
 			}
 
 			pbodyA->velocity.x = -pbodyA->velocity.x;
@@ -197,8 +198,6 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 		}
 
 		pbodyA->frictioning = true;
-
-		pbodyA->velocity = pbodyA->velocity / 2.0;
 
 		pbodyA->collider->SetPos(pbodyA->position.x, pbodyA->position.y);
 	}
