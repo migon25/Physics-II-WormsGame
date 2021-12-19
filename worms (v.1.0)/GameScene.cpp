@@ -30,6 +30,7 @@ bool GameScene::Start()
 
 	// Atmosphere
 	//App->physics->SetAtmosphere(-10.0, 0, 0.00001);
+	sky = App->textures->Load("Assets/sky.png");
 
 	// Target
 	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::ENEMY, this);
@@ -42,6 +43,7 @@ bool GameScene::Start()
 
 	// Ground
 	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 150, Collider::Type::GROUND, this);
+	terrain = App->textures->Load("Assets/ground.png");
 
 	// Module enabler
 	ground->physics_enabled = false;
@@ -61,8 +63,8 @@ bool GameScene::CleanUp()
 update_status GameScene::Update()
 {
 	// Render
-	
-	App->renderer->DrawQuad(ground->collider->rect, 255, 255, 255, 255);
+	App->renderer->Blit(sky, 0, 0, NULL);
+	App->renderer->Blit(terrain, 0, SCREEN_HEIGHT - 100, NULL);
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
 		SDL_Rect rect;

@@ -5,6 +5,7 @@
 #include "Globals.h"
 
 class PhysBody;
+struct SDL_Texture;
 
 class GameScene : public Module
 {
@@ -20,4 +21,7 @@ public:
 public:
 	PhysBody* ground;
 	PhysBody* target;
+
+	SDL_Texture* terrain;
+	SDL_Texture* sky;
 };
