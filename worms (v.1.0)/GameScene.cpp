@@ -77,18 +77,20 @@ update_status GameScene::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
 	{
-		SDL_Rect rect;
-		rect.x = App->input->GetMouseX() - 25;
-		rect.y = App->input->GetMouseY() - 25;
-		rect.w = 50;
-		rect.h = 50;
-		PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
-		pb->mass = 30;
-		pb->frictionCoefficient = 0.5;
-		pb->restitutionCoefficient = 0.5;
-		pb->physics_enabled = true;
-		grenadePos.x = rect.x;
-		grenadePos.y = rect.y;
+		for (int i = 0; i < 5; i++) {
+			SDL_Rect rect;
+			rect.x = App->input->GetMouseX() - 25;
+			rect.y = App->input->GetMouseY() - 25;
+			rect.w = 50;
+			rect.h = 50;
+			PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
+			pb->mass = 30;
+			pb->frictionCoefficient = 0.5;
+			pb->restitutionCoefficient = 0.5;
+			pb->physics_enabled = true;
+			grenadePos.x = rect.x;
+			grenadePos.y = rect.y;
+		}
 	}
 
 	App->renderer->Blit(corsairTex, grenadePos.x, grenadePos.y, &corsairRec);

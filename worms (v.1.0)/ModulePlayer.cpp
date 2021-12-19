@@ -32,17 +32,17 @@ bool ModulePlayer::Start()
 	playerBody->frictionCoefficient = 0.0;
 	playerBody->restitutionCoefficient = 0.0;
 
-	wormIdle.PushBack({ 8,7,8,13 });
-	wormIdle.loop = false;
+	animations[PS_IDLE].PushBack({ 8,7,8,13 });
+	animations[PS_IDLE].loop = false;
 
-	wormWalk.PushBack({ 8,7,8,13 });
-	wormWalk.PushBack({ 19,7,8,13 });
-	wormWalk.loop = true;
-	wormWalk.speed = 0.05f;
+	animations[PS_WALK].PushBack({ 8,7,8,13 });
+	animations[PS_WALK].PushBack({ 19,7,8,13 });
+	animations[PS_WALK].loop = true;
+	animations[PS_WALK].speed = 0.05f;
 
 	worm = App->textures->Load("Assets/worms.png");
 
-	currentWormAnim = &wormIdle;
+	state = PS_IDLE;
 
 	return true;
 }
@@ -58,35 +58,38 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	wormText = currentWormAnim->GetCurrentFrame();
-	
+	state = PS_IDLE;
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		currentWormAnim = &wormWalk;
-		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+		state = PS_WALK;
+		flip = SDL_FLIP_NONE;
 		playerBody->position.x += 1;
 		prevPos = playerBody->position.x - 1;
 	} 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
-		currentWormAnim = &wormWalk;
-		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);
+		state = PS_WALK;
+		flip = SDL_FLIP_HORIZONTAL;
 		playerBody->position.x -= 1;
 		prevPos = playerBody->position.x + 1;
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		playerBody->Impulse(0, -50000);
 	}
 
-	if ((App->input->GetKey(SDL_SCANCODE_A) == false) && (App->input->GetKey(SDL_SCANCODE_D) == false))
-	{
-		currentWormAnim = &wormIdle;
-		if (playerBody->position.x < prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);;
-		if (playerBody->position.x > prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
-	}
+	animations[state].Update();
 
-	currentWormAnim->Update();
+	return UPDATE_CONTINUE;
+}
+
+update_status ModulePlayer::PostUpdate()
+{
+	SDL_Rect animRect = animations[state].GetCurrentFrame();
+
+	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &animRect, 1.0f, 0.0, flip);
 
 	return UPDATE_CONTINUE;
 }

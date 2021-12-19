@@ -3,17 +3,23 @@
 #include "Globals.h"
 #include "p2Point.h"
 #include "Animation.h"
-
-struct SDL_Texture;
+#include "SDL/include/SDL.h"
 
 class ModulePlayer : public Module
 {
 public:
+	enum PlayerState {
+		PS_IDLE,
+		PS_WALK,
+		PS_LAST
+	};
+
 	ModulePlayer(Application* app, bool start_enabled = true);
 	virtual ~ModulePlayer();
 
 	bool Start();
 	update_status Update();
+	update_status PostUpdate() override;
 	bool CleanUp();
 
 public:
@@ -21,15 +27,13 @@ public:
 
 	SDL_Texture* worm;
 
-	Animation* currentWormAnim = nullptr;
-
-	Animation wormIdle;
-	Animation wormWalk;
-
-	SDL_Rect wormText;
+	Animation animations[PS_LAST];
 
 	//for the body
 	SDL_Rect wormRect;
+	SDL_RendererFlip flip;
+
+	PlayerState state;
 
 	int prevPos;
 
