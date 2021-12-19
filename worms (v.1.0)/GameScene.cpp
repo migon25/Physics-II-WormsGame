@@ -19,6 +19,11 @@ GameScene::GameScene(Application* app, bool start_enabled) : Module(app, start_e
 {
 	corsairAnim.PushBack({ 148,7,10,10 });
 	corsairAnim.loop = false;
+
+	grenade.PushBack({ 141, 435, 8, 8 });
+	ice.PushBack({ 153,346,6,8 });
+	missile.PushBack({ 191,375,4,8 });
+	
 }
 
 GameScene::~GameScene()
@@ -97,9 +102,11 @@ update_status GameScene::Update()
 	// Instant Loss
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
 
-	numEnemies = App->entityModule->entityCount[0];
-	numGren = App->entityModule->entityCount[1];
-	numBoxes = App->entityModule->entityCount[3];
+	numEnemies = App->entityModule->entityCount[(int)EntityModule::EntityType::ET_ENEMY];
+	numGren = App->entityModule->entityCount[(int) EntityModule::EntityType::ET_GRENADE];
+	numBoxes = App->entityModule->entityCount[(int)EntityModule::EntityType::ET_BOX];
+	numIce = App->entityModule->entityCount[(int)EntityModule::EntityType::ET_ICECUBE];
+
 	// Numbers display
 	if (App->collisions->debug == true)
 	{
@@ -109,6 +116,25 @@ update_status GameScene::Update()
 		App->renderer->DrawNumber(numBoxes, 120, 40, 3, numbers, 7, 10);
 		App->fonts->BlitText(20, 60, fonts, "grenades");
 		App->renderer->DrawNumber(numGren, 120, 60, 3, numbers, 7, 10);
+		App->fonts->BlitText(20, 80, fonts, "ice");
+		App->renderer->DrawNumber(numIce, 120, 80, 3, numbers, 7, 10);
+	}
+
+	switch (App->player->weapon) 
+	{
+	case 0:
+		grenRec = grenade.GetCurrentFrame();
+		App->renderer->Blit(corsairTex, 20, 20, &grenRec);
+		break;
+
+	case 1:
+		iceRec = ice.GetCurrentFrame();
+		App->renderer->Blit(corsairTex, 20, 20, &iceRec);
+		break;
+	case 2:
+		missRec = missile.GetCurrentFrame();
+		App->renderer->Blit(corsairTex, 20, 20, &missRec);
+		break;
 	}
 
 	return UPDATE_CONTINUE;

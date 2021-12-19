@@ -15,7 +15,7 @@ Grenade::~Grenade()
 
 void Grenade::Init(Module * module)
 {
-	rect = { 141,435,8,8 };
+	rect = { 153,346,6,8 };
 
 	texture = App->textures->Load("Assets/worms.png");
 
@@ -27,8 +27,8 @@ void Grenade::Init(Module * module)
 
 	entityBody = App->physics->CreatePhysBody(pbodyRect, Collider::Type::BULLET, module);
 	entityBody->mass = 80;
-	entityBody->frictionCoefficient = 1.0;
-	entityBody->restitutionCoefficient = 0.1;
+	entityBody->frictionCoefficient = 0.3;
+	entityBody->restitutionCoefficient = 0.5;
 	entityBody->physics_enabled = true;
 
 	type = EntityModule::EntityType::ET_GRENADE;
