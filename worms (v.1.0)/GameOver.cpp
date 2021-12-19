@@ -27,6 +27,9 @@ bool GameOver::Start()
 	App->renderer->camera.x = 0;
 	App->renderer->camera.y = 0;
 
+
+	endBackground = App->textures->Load("Assets/wormsLose.png");
+
 	return ret;
 }
 
@@ -36,6 +39,8 @@ update_status GameOver::Update()
 	{
 		App->fadeToBlack->Fade_To_Black(this, (Module*)App->sceneIntro, 0);
 	}
+
+	App->renderer->Blit(endBackground, 0, 0, NULL);
 
 	return UPDATE_CONTINUE;
 }
@@ -47,6 +52,7 @@ update_status GameOver::PostUpdate()
 
 bool GameOver::CleanUp()
 {
+	App->textures->Unload(endBackground);
 	LOG("Freeing scene GameOver");
 	App->audio->Clear();
 	return true;
