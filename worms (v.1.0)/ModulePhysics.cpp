@@ -108,7 +108,7 @@ PhysBody * ModulePhysics::CreatePhysBody(SDL_Rect rect, Collider::Type type, Mod
 	pbody->mass = 0.0;
 	pbody->surface = 0.0;
 
-	pbody->gravityScale = 1;
+	pbody->gravityScale = 1.0;
 	pbody->dragCoefficient = 0.0;
 	pbody->frictionCoefficient = 0.0;
 	pbody->liftCoefficient = 0.0;
@@ -227,8 +227,8 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	double fgy = body->mass * GRAVITY_Y; // Let's assume gravity is constant and downwards
 
 	// Add gravity force to the total accumulated force of the ball
-	body->totalForce.x += fgx;
-	body->totalForce.y += fgy;
+	body->totalForce.x += fgx * body->gravityScale;
+	body->totalForce.y += fgy * body->gravityScale;
 
 	// Compute Aerodynamic Lift & Drag forces
 	double speed = CalculateSpeed(body->velocity.x - atmosphere.windx, body->velocity.y - atmosphere.windy);

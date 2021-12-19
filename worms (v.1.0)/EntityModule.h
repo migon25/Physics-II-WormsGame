@@ -15,6 +15,7 @@ public:
 		ET_GRENADE,
 		ET_ICECUBE,
 		ET_BOX,
+		ET_MISSILE,
 		ET_LAST
 	};
 

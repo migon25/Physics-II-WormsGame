@@ -77,10 +77,12 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityModule.h" />
     <ClInclude Include="FadeToBlack.h" />
+    <ClInclude Include="FlyingEnemy.h" />
     <ClInclude Include="GameOver.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="IceCube.h" />
+    <ClInclude Include="Missile.h" />
     <ClInclude Include="ModuleCollisions.h" />
     <ClInclude Include="ModuleFonts.h" />
     <ClInclude Include="ModulePhysics.h" />
@@ -105,11 +107,13 @@
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="EntityModule.cpp" />
     <ClCompile Include="FadeToBlack.cpp" />
+    <ClCompile Include="FlyingEnemy.cpp" />
     <ClCompile Include="GameOver.cpp" />
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="IceCube.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Missile.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCollisions.cpp" />
     <ClCompile Include="ModuleFonts.cpp" />

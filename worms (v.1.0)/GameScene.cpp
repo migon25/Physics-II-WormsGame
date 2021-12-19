@@ -12,6 +12,7 @@
 #include "EntityModule.h"
 #include "ModuleCollisions.h"
 #include "ModuleFonts.h"
+#include "GameOver.h"
 
 #include <iostream>
 
@@ -48,17 +49,10 @@ bool GameScene::Start()
 	// Atmosphere
 	//App->physics->SetAtmosphere(-10.0, 0, 0.00001);
 	sky = App->textures->Load("Assets/sky.png");
+	
+	App->entityModule->AddEntity(EntityModule::EntityType::ET_ENEMY, { SCREEN_WIDTH / 2, 50 });
 
-	// Target
-	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::TARGET, this);
 	corsairTex = App->textures->Load("Assets/worms.png");
-
-	target->mass = 100; // kg
-	target->surface = 2; // m^2
-	target->dragCoefficient = -0.4;
-	target->liftCoefficient = 1.2;
-	target->frictionCoefficient = 1.0;
-	target->restitutionCoefficient = 1.0;
 
 	// Ground
 	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 150, Collider::Type::GROUND, this);
@@ -76,6 +70,14 @@ bool GameScene::Start()
 	App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 730, 380 });
 	App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 730, 360 });
 
+	for (int i = 0; i < 2; i++) {
+		App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 400, 380.0 - i * 20.0 });
+	}
+
+	for (int i = 0; i < 2; i++) {
+		App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 500, 380.0 - i * 20.0 });
+	}
+
 	return ret;
 }
 
@@ -89,6 +91,7 @@ bool GameScene::CleanUp()
 // Update: draw background
 update_status GameScene::Update()
 {
+	//App->gameOver->
 	// Render
 	App->renderer->Blit(sky, 0, 0, NULL);
 	App->renderer->Blit(terrain, 0, SCREEN_HEIGHT - 100, NULL);

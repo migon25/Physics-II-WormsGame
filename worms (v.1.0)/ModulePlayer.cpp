@@ -103,6 +103,22 @@ void ModulePlayer::ShootCubes()
 	entity->Impulse(grenadeImpulse);
 }
 
+void ModulePlayer::ShootMissile()
+{
+	int mouseX = App->input->GetMouseX();
+	int mouseY = App->input->GetMouseY();
+	Vector2 mousePos(mouseX, mouseY);
+
+	Vector2 diff = mousePos - playerBody->position;
+	diff.Normalize();
+
+	Vector2 grenadePos = playerBody->position + (diff * grenadeOffset);
+	Vector2 grenadeImpulse = diff * grenadeForce;
+
+	Entity* entity = App->entityModule->AddEntity(EntityModule::EntityType::ET_MISSILE, grenadePos);
+	entity->Impulse(grenadeImpulse);
+}
+
 // Update: draw background
 update_status ModulePlayer::Update()
 {
@@ -154,6 +170,9 @@ update_status ModulePlayer::Update()
 		}
 		break;
 	case 2:
+		if (App->input->GetMouseButton(1) == KEY_DOWN) {
+			ShootMissile();
+		}
 		break;
 	}
 	
