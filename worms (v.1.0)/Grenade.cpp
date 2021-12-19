@@ -32,10 +32,18 @@ void Grenade::Init(Module * module)
 	entityBody->physics_enabled = true;
 
 	type = EntityModule::EntityType::ET_GRENADE;
+
+	time = 5.0f;
+	timer = 0.0f;
 }
 
 void Grenade::Update(float dt)
 {
+	timer += dt;
+
+	if (timer >= time) {
+		Die();
+	}
 }
 
 void Grenade::Render()
@@ -45,5 +53,7 @@ void Grenade::Render()
 
 void Grenade::Die()
 {
-	Entity::Remove();
+	Entity::Die();
+
+	//App->entityModule->AddEntity()
 }

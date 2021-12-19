@@ -47,6 +47,7 @@ public:
 
 	int weapon;
 
+	double jumpForce;
 private:
 	void Shoot();
 	void ShootCubes();
