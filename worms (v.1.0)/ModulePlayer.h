@@ -45,6 +45,8 @@ public:
 	double maxForce;
 	double minForce;
 
+	int weapon;
+
 private:
 	void Shoot();
 	void ShootCubes();

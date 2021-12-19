@@ -55,6 +55,8 @@ bool ModulePlayer::Start()
 
 	grenadeOffset = 20.0;
 
+	// switch weapons
+	weapon = 0;
 
 	return true;
 }
@@ -124,22 +126,35 @@ update_status ModulePlayer::Update()
 		playerBody->Impulse(0, -100);
 	}
 
-	if (App->input->GetMouseButton(3) == KEY_REPEAT) {
-		iceForce ++;
-	}
-	if (App->input->GetMouseButton(3) == KEY_UP) {
-		ShootCubes();
-		iceForce = minForce;
-	}
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) weapon++;
+	if (weapon > 2) weapon = 0;
 
-	if (App->input->GetMouseButton(1) == KEY_REPEAT) {
-		grenadeForce++;
-		if (grenadeForce >= maxForce) grenadeForce = maxForce;
+	switch (weapon)
+	{
+	case 0:
+		if (App->input->GetMouseButton(1) == KEY_REPEAT) {
+			iceForce++;
+		}
+		if (App->input->GetMouseButton(1) == KEY_UP) {
+			ShootCubes();
+			iceForce = minForce;
+		}
+		break;
+
+	case 1:
+		if (App->input->GetMouseButton(1) == KEY_REPEAT) {
+			grenadeForce++;
+			if (grenadeForce >= maxForce) grenadeForce = maxForce;
+		}
+		if (App->input->GetMouseButton(1) == KEY_UP) {
+			Shoot();
+			grenadeForce = minForce;
+		}
+		break;
 	}
-	if (App->input->GetMouseButton(1) == KEY_UP) {
-		Shoot();
-		grenadeForce = minForce;
-	}
+	
+
+	
 
 	animations[state].Update();
 
