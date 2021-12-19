@@ -32,6 +32,12 @@ public:
 	// Mouse
 	SDL_Texture* corsairTex;
 	Animation corsairAnim;
+	Animation grenade;
+	Animation ice;
+	Animation missile;
+	SDL_Rect grenRec;
+	SDL_Rect iceRec;
+	SDL_Rect missRec;
 	SDL_Rect corsairRec;
 	Vector2 mousePos;
 
@@ -41,6 +47,7 @@ public:
 	int numEnemies;
 	int numGren;
 	int numBoxes;
+	int numIce;
 	int fonts;
 
 private:

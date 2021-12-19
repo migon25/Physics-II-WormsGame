@@ -153,6 +153,8 @@ update_status ModulePlayer::Update()
 			grenadeForce = minForce;
 		}
 		break;
+	case 2:
+		break;
 	}
 	
 
