@@ -62,6 +62,8 @@ bool GameScene::Start()
 	// Module enabler
 	ground->physics_enabled = false;
 	App->player->Enable();
+	App->entityModule->Enable();
+	App->physics->Enable();
 
 	// Spawn boxes
 	for (int i = 0; i < 2; i++) {
@@ -92,7 +94,13 @@ bool GameScene::CleanUp()
 // Update: draw background
 update_status GameScene::Update()
 {
-	//App->gameOver->
+	if (App->entityModule->GetTotalEntityCount() == 0) {
+		App->gameOver->win = true;
+		App->player->Disable();
+		App->physics->Disable();
+		App->entityModule->Disable();
+		App->fadeToBlack->Fade_To_Black(this, App->gameOver, 60);
+	}
 	// Render
 	App->renderer->Blit(sky, 0, 0, NULL);
 	App->renderer->Blit(terrain, 0, SCREEN_HEIGHT - 100, NULL);

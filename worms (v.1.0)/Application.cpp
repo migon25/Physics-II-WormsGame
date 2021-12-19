@@ -31,9 +31,9 @@ Application::Application()
 	sceneIntro = new SceneIntro(this, true);
 	gameOver = new GameOver(this, false);
 	gameScene = new GameScene(this,false);
-	physics = new ModulePhysics(this, true);
+	physics = new ModulePhysics(this, false);
 	collisions = new ModuleCollisions(this, true);
-	entityModule = new EntityModule(this, true);
+	entityModule = new EntityModule(this, false);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order

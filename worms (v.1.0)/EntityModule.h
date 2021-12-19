@@ -49,6 +49,8 @@ public:
 	// Called when player collides with an object
 	void OnCollision(Collider* bodyA, Collider* bodyB) override;
 
+	int GetTotalEntityCount() { return entities.count(); }
+
 	int GetEntityCount(EntityType type);
 
 	p2List<Entity*>* GetEntitiesInRadius(Entity* entity, double radius);

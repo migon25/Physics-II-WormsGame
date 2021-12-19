@@ -32,7 +32,7 @@ public:
 public:
 	// The scene sprite sheet loaded into an SDL_Texture
 	SDL_Texture* endBackground;
-
+	bool win;
 };
 
 #endif	// __SCENEINTRO_H__
