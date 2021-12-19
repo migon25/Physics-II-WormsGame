@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Collider.h"
 #include "Grenade.h"
+#include "Box.h"
 
 #include <iostream>
 
@@ -95,6 +96,9 @@ Entity* EntityModule::AddEntity(EntityType type, Vector2 position)
 	switch (type) {
 	case EntityType::ET_GRENADE:
 		entity = new Grenade(App);
+		break;
+	case EntityType::ET_BOX:
+		entity = new Box(App);
 		break;
 	}
 

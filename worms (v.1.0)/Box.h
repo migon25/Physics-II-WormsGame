@@ -1,15 +1,13 @@
 #pragma once
 #include "Entity.h"
 
-class Grenade : public Entity
+class Box : public Entity
 {
 public:
-	Grenade(Application* app);
-	~Grenade();
+	Box(Application* app);
+	~Box();
 
 	void Init(Module* module) override;
 	void Update(float dt) override;
 	void Render() override;
-
-	void Die() override;
 };

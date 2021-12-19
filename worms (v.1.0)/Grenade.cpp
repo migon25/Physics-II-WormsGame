@@ -42,3 +42,8 @@ void Grenade::Render()
 {
 	App->renderer->Blit(texture, entityBody->position.x, entityBody->position.y, &rect);
 }
+
+void Grenade::Die()
+{
+	Entity::Remove();
+}

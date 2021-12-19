@@ -12,6 +12,7 @@ class EntityModule : public Module
 public:
 	enum class EntityType {
 		ET_GRENADE,
+		ET_BOX,
 		ET_LAST
 	};
 
