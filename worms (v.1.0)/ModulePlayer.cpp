@@ -34,6 +34,22 @@ bool ModulePlayer::Start()
 	wormAnim.PushBack({ 8,7,8,13 });
 	worm = App->textures->Load("Assets/worms.png");
 
+	wormWalkRAnim.PushBack({ 33,6,12,15 });
+	wormWalkRAnim.PushBack({ 44,6,12,15 });
+	wormWalkRAnim.PushBack({ 58,5,12,15 });
+	wormWalkRAnim.PushBack({ 69,6,12,15 });
+	wormWalkRAnim.loop = true;
+	wormWalkRAnim.speed = 0.1;
+
+	wormWalkLAnim.PushBack({ 448,6,12,15 });
+	wormWalkLAnim.PushBack({ 437,6,12,15 });
+	wormWalkLAnim.PushBack({ 421,5,12,15 });
+	wormWalkLAnim.PushBack({ 410,6,12,15 });
+	wormWalkLAnim.loop = true;
+	wormWalkLAnim.speed = 0.1;
+
+	currentWormAnim = &wormAnim;
+
 	return true;
 }
 
@@ -49,9 +65,29 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update()
 {
 	wormText = wormAnim.GetCurrentFrame();
+
 	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText,false,1.0,SDL_FLIP_HORIZONTAL);
-	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) playerBody->position.x += 2;
-	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) playerBody->position.x -= 2;
+	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+	{
+		playerBody->position.x += 2;
+
+		//animation 
+		currentWormAnim = &wormWalkRAnim;
+		wormWalkRAnim.Update();
+		wormText = wormWalkRAnim.GetCurrentFrame();
+		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+	{
+		playerBody->position.x -= 2;
+
+		//animation 
+		currentWormAnim = &wormWalkLAnim;
+		wormWalkLAnim.Update();
+		wormText = wormWalkLAnim.GetCurrentFrame();
+		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+	}
 
 	return UPDATE_CONTINUE;
 }
