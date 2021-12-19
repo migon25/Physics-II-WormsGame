@@ -48,7 +48,9 @@ bool ModulePlayer::Start()
 	state = PS_IDLE;
 
 	grenadeOffset = 10.0;
-	grenadeForce = 180000;
+	maxForce = 260000;
+	minForce = 250000;
+	grenadeForce = minForce;
 
 	return true;
 }
@@ -102,8 +104,13 @@ update_status ModulePlayer::Update()
 		playerBody->Impulse(0, -50000);
 	}
 
-	if (App->input->GetMouseButton(1) == KEY_DOWN) {
+	if (App->input->GetMouseButton(1) == KEY_REPEAT) {
+		grenadeForce += 2500;
+		if (grenadeForce == maxForce) grenadeForce = maxForce;
+	}
+	if (App->input->GetMouseButton(1) == KEY_UP) {
 		Shoot();
+		grenadeForce = minForce;
 	}
 
 	animations[state].Update();

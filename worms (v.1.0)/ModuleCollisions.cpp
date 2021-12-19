@@ -109,7 +109,7 @@ update_status ModuleCollisions::Update()
 
 update_status ModuleCollisions::PostUpdate()
 {
-	//if (debug)
+	if (debug)
 		DebugDraw();
 
 	return UPDATE_CONTINUE;

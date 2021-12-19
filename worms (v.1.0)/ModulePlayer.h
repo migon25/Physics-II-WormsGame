@@ -39,6 +39,9 @@ public:
 
 	double grenadeOffset;
 	double grenadeForce;
+
+	double maxForce;
+	double minForce;
 private:
 	void Shoot();
 };

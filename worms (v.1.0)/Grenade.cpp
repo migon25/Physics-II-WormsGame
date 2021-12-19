@@ -15,7 +15,7 @@ Grenade::~Grenade()
 
 void Grenade::Init(Module * module)
 {
-	rect = { 148,7,10,10 };
+	rect = { 153,346,6,8 };
 
 	texture = App->textures->Load("Assets/worms.png");
 
