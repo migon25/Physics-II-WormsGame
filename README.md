@@ -18,7 +18,11 @@ Space to start the game, or restart after game is lost.
 "A" to move your character left, "D" to move right.
 "Space" to jump.
 
-Mouse left click to launch a grenade.
+Mouse left click to launch a weapon.
+Hold the mouse button for more velocity.
+
+Win: destroy all the boxes and the enemy.
+lose: try not to die with your weapons or touch the enemy or deadly boxes.
 
 Switching weapons when "1" is pressed.
 
