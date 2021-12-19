@@ -46,11 +46,11 @@ public:
 	int entityCount[(int)EntityType::ET_LAST];
 
 	// Called when player collides with an object
-	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
+	void OnCollision(Collider* bodyA, Collider* bodyB) override;
 
 	int GetEntityCount(EntityType type);
 
-	p2List<Entity*> GetEntitiesInRadius(Entity* entity, double radius);
+	p2List<Entity*>* GetEntitiesInRadius(Entity* entity, double radius);
 private:
 	p2List<Entity*> entities;
 };

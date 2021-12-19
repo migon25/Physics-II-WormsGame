@@ -119,9 +119,31 @@ Entity* EntityModule::AddEntity(EntityType type, Vector2 position)
 	return entity;
 }
 
-void EntityModule::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
+void EntityModule::OnCollision(Collider* bodyA, Collider* bodyB)
 {
-	
+	Entity* e1 = nullptr;
+	Entity* e2 = nullptr;
+
+	p2List_item<Entity*>* entity = entities.getFirst();
+
+	while (entity) {
+		if (entity->data->HasCollider(bodyA)) {
+			e1 = entity->data;
+		}
+
+		if (entity->data->HasCollider(bodyB)) {
+			e2 = entity->data;
+		}
+
+		if (e1 && e2) break;
+
+		entity = entity->next;
+	}
+
+	if (e1 && e2) {
+		e1->OnCollision(e2);
+		e2->OnCollision(e1);
+	}
 }
 
 int EntityModule::GetEntityCount(EntityType type)
@@ -129,9 +151,9 @@ int EntityModule::GetEntityCount(EntityType type)
 	return entityCount[(int)type];
 }
 
-p2List<Entity*> EntityModule::GetEntitiesInRadius(Entity* ent, double radius)
+p2List<Entity*>* EntityModule::GetEntitiesInRadius(Entity* ent, double radius)
 {
-	p2List<Entity*> list;
+	p2List<Entity*>* list = new p2List<Entity*>();
 
 	p2List_item<Entity*>* entity = entities.getFirst();
 
@@ -142,7 +164,7 @@ p2List<Entity*> EntityModule::GetEntitiesInRadius(Entity* ent, double radius)
 			double dist = diff.Magnitude();
 
 			if (dist < radius) {
-				list.add(entity->data);
+				list->add(entity->data);
 			}
 		}
 

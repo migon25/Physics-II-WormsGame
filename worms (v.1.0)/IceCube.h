@@ -13,4 +13,6 @@ public:
 	void Init(Module* module) override;
 	void Update(float dt) override;
 	void Render() override;
+
+	void OnCollision(Entity* other) override;
 };

@@ -34,14 +34,14 @@ void IceCube::Init(Module* module)
 	type = EntityModule::EntityType::ET_ICECUBE;
 
 	timer = 0.0f;
-	time = 1.5f;
+	time = 8.0f;
 }
 
 void IceCube::Update(float dt)
 {
 	Entity::Update(dt);
 
-	timer >= dt;
+	timer += dt;
 
 	if (timer >= time) {
 		Die();
@@ -51,4 +51,10 @@ void IceCube::Update(float dt)
 void IceCube::Render()
 {
 	App->renderer->Blit(texture, entityBody->position.x, entityBody->position.y, &rect);
+}
+
+void IceCube::OnCollision(Entity * other)
+{
+	Die();
+	other->Die();
 }
