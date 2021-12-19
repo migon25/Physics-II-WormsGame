@@ -47,8 +47,8 @@ bool ModulePlayer::Start()
 
 	state = PS_IDLE;
 
-	maxForce = 260000;
-	minForce = 250000;
+	maxForce = 250;
+	minForce = 150;
 	grenadeForce = minForce;
 	grenadeOffset = 20.0;
 
@@ -105,8 +105,8 @@ update_status ModulePlayer::Update()
 	}
 
 	if (App->input->GetMouseButton(1) == KEY_REPEAT) {
-		grenadeForce += 2500;
-		if (grenadeForce == maxForce) grenadeForce = maxForce;
+		grenadeForce++;
+		if (grenadeForce >= maxForce) grenadeForce = maxForce;
 	}
 	if (App->input->GetMouseButton(1) == KEY_UP) {
 		Shoot();
