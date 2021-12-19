@@ -176,11 +176,11 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 		// Reposition object
 		if (colWidth < colHeight) {
 			// Reposition by X-axis
-			if (diff.x > 0) {
-				pbodyA->position.x += colWidth;
+ 			if (diff.x > 0) {
+				pbodyA->position.x -= colWidth;
 			}
 			else {
-				pbodyA->position.x -= colWidth;
+				pbodyA->position.x += colWidth;
 			}
 
 			pbodyA->velocity.x = -pbodyA->velocity.x;
