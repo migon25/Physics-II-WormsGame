@@ -57,7 +57,7 @@ bool ModulePlayer::Start()
 
 	// switch weapons
 	weapon = 0;
-	jumpForce = 200;
+	jumpForce = 100;
 
 
 	return true;

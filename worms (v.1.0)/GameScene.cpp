@@ -106,10 +106,20 @@ update_status GameScene::Update()
 	numGren = App->entityModule->entityCount[(int) EntityModule::EntityType::ET_GRENADE];
 	numBoxes = App->entityModule->entityCount[(int)EntityModule::EntityType::ET_BOX];
 	numIce = App->entityModule->entityCount[(int)EntityModule::EntityType::ET_ICECUBE];
+	veloInteg = (int) App->physics->GetVelocityIntegrator();
 
+	// switch between velocities
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) 
+	{
+		veloInteg += 1;
+		App->physics->SetVelocityIntegrator((ModulePhysics::VelocityIntegrator)veloInteg);
+		if (veloInteg > 2)App->physics->SetVelocityIntegrator(ModulePhysics::VelocityIntegrator::VERLET);
+	}
+		
 	// Numbers display
 	if (App->collisions->debug == true)
 	{
+		// entity
 		App->fonts->BlitText(20, 20, fonts, "enemies");
 		App->renderer->DrawNumber(numEnemies, 120, 20, 3, numbers, 7, 10);
 		App->fonts->BlitText(20, 40, fonts, "boxes");
@@ -118,23 +128,44 @@ update_status GameScene::Update()
 		App->renderer->DrawNumber(numGren, 120, 60, 3, numbers, 7, 10);
 		App->fonts->BlitText(20, 80, fonts, "ice");
 		App->renderer->DrawNumber(numIce, 120, 80, 3, numbers, 7, 10);
+
+		// velocity
+		App->fonts->BlitText(500, 20, fonts, "velocity");
+		switch (veloInteg)
+		{
+		case 0:
+			App->fonts->BlitText(610, 20, fonts, "verlet");
+			break;
+
+		case 1: 
+			App->fonts->BlitText(610, 20, fonts, "sympleticeuler");
+			break;
+
+		case 2: 
+			App->fonts->BlitText(610, 20, fonts, "impliciteuler");
+			break;
+		}
 	}
 
-	switch (App->player->weapon) 
+	if (App->collisions->debug == false)
 	{
-	case 0:
-		grenRec = grenade.GetCurrentFrame();
-		App->renderer->Blit(corsairTex, 20, 20, &grenRec);
-		break;
+		switch (App->player->weapon)
+		{
+		case 0:
+			grenRec = grenade.GetCurrentFrame();
+			App->renderer->Blit(corsairTex, 20, 20, &grenRec);
+			break;
 
-	case 1:
-		iceRec = ice.GetCurrentFrame();
-		App->renderer->Blit(corsairTex, 20, 20, &iceRec);
-		break;
-	case 2:
-		missRec = missile.GetCurrentFrame();
-		App->renderer->Blit(corsairTex, 20, 20, &missRec);
-		break;
+		case 1:
+			iceRec = ice.GetCurrentFrame();
+			App->renderer->Blit(corsairTex, 20, 20, &iceRec);
+			break;
+		case 2:
+			missRec = missile.GetCurrentFrame();
+			App->renderer->Blit(corsairTex, 20, 20, &missRec);
+			break;
+		}
+
 	}
 
 	return UPDATE_CONTINUE;
