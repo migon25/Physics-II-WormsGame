@@ -28,9 +28,9 @@ Application::Application()
 	fadeToBlack = new FadeToBlack(this);
 	player = new ModulePlayer(this,false);
 	fonts = new ModuleFonts(this, true);
-	sceneIntro = new SceneIntro(this, false);
+	sceneIntro = new SceneIntro(this, true);
 	gameOver = new GameOver(this, false);
-	gameScene = new GameScene(this,true);
+	gameScene = new GameScene(this,false);
 	physics = new ModulePhysics(this, true);
 	collisions = new ModuleCollisions(this, true);
 	entityModule = new EntityModule(this, true);
