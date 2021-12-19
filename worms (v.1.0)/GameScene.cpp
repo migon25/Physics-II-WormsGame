@@ -79,15 +79,17 @@ update_status GameScene::Update()
 	{
 		for (int i = 0; i < 5; i++) {
 			SDL_Rect rect;
-			rect.x = App->input->GetMouseX() - 25;
-			rect.y = App->input->GetMouseY() - 25;
-			rect.w = 50;
-			rect.h = 50;
-			PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::NONE, this);
+			rect.x = App->player->playerBody->position.x;
+			rect.y = App->player->playerBody->position.x;
+			rect.w = 5;
+			rect.h = 5;
+			PhysBody* pb = App->physics->CreatePhysBody(rect, Collider::Type::BULLET, this);
 			pb->mass = 30;
 			pb->frictionCoefficient = 0.5;
 			pb->restitutionCoefficient = 0.5;
 			pb->physics_enabled = true;
+			pb->velocity.x = 80;
+			pb->velocity.y = -100;
 			grenadePos.x = rect.x;
 			grenadePos.y = rect.y;
 		}
