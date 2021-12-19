@@ -41,8 +41,12 @@ public:
 
 	Entity* AddEntity(EntityType type, Vector2 position);
 
+	int entityCount[(int)EntityType::ET_LAST];
+
 	// Called when player collides with an object
 	void OnCollision(PhysBody* bodyA, PhysBody* bodyB) override;
+
+	int GetEntityCount(EntityType type);
 private:
 	p2List<Entity*> entities;
 };
