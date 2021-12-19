@@ -21,8 +21,8 @@ bool ModulePlayer::Start()
 
 	wormRect.x = SCREEN_WIDTH / 5;
 	wormRect.y = 100;
-	wormRect.w = 50;
-	wormRect.h = 50;
+	wormRect.w = 8;
+	wormRect.h = 13;
 	playerBody = App->physics->CreatePhysBody(wormRect, Collider::Type::PLAYER, this);
 
 	playerBody->mass = 10; // kg
@@ -32,7 +32,7 @@ bool ModulePlayer::Start()
 	playerBody->frictionCoefficient = 1.0;
 
 	wormAnim.PushBack({ 8,7,8,13 });
-	//worm = App->textures->Load("Assets/worms.png");
+	worm = App->textures->Load("Assets/worms.png");
 
 	return true;
 }
@@ -49,7 +49,7 @@ bool ModulePlayer::CleanUp()
 update_status ModulePlayer::Update()
 {
 	wormText = wormAnim.GetCurrentFrame();
-	//App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText,false,1.0,SDL_FLIP_HORIZONTAL);
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) playerBody->position.x += 2;
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) playerBody->position.x -= 2;
 

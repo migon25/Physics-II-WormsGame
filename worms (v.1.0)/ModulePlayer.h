@@ -4,6 +4,8 @@
 #include "p2Point.h"
 #include "Animation.h"
 
+struct SDL_Texture;
+
 class ModulePlayer : public Module
 {
 public:
@@ -17,8 +19,7 @@ public:
 public:
 	PhysBody* playerBody;
 
-private:
-	//SDL_Texture* worm;
+	SDL_Texture* worm;
 	Animation wormAnim;
 	SDL_Rect wormText;
 

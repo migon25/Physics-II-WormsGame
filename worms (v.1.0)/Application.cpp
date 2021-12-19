@@ -39,7 +39,6 @@ Application::Application()
 	AddModule(window);
 	AddModule(physics);
 	AddModule(collisions);
-	AddModule(renderer);
 	AddModule(textures);
 	AddModule(input);
 	AddModule(audio);
@@ -53,6 +52,8 @@ Application::Application()
 	
 	// Player
 	AddModule(player);
+
+	AddModule(renderer);
 }
 
 Application::~Application()

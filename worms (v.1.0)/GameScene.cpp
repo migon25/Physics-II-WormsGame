@@ -45,7 +45,7 @@ bool GameScene::Start()
 
 	// Module enabler
 	ground->physics_enabled = false;
-	//App->player->Enable();
+	App->player->Enable();
 
 	return ret;
 }
