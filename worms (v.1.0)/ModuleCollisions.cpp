@@ -14,32 +14,32 @@ ModuleCollisions::ModuleCollisions(Application* app, bool start_enabled) : Modul
 		colliders[i] = nullptr;
 
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
-	matrix[Collider::Type::PLAYER][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::PLAYER][Collider::Type::TARGET] = true;
+	matrix[Collider::Type::PLAYER][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::NONE] = true;
 
-	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::ENEMY][Collider::Type::BULLET] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::GROUND] = true;
-	matrix[Collider::Type::ENEMY][Collider::Type::NONE] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::TARGET] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::GROUND] = true;
+	matrix[Collider::Type::TARGET][Collider::Type::NONE] = true;
 
-	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::BULLET][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::BULLET][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::NONE][Collider::Type::NONE] = true;
 	matrix[Collider::Type::NONE][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::NONE][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::NONE][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::NONE][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::NONE][Collider::Type::BULLET] = true;
 
 	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
 	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
-	matrix[Collider::Type::GROUND][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::GROUND][Collider::Type::TARGET] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::GROUND][Collider::Type::NONE] = true;
 
@@ -131,7 +131,7 @@ void ModuleCollisions::DebugDraw()
 		case Collider::Type::PLAYER: // green
 			App->renderer->DrawQuad(colliders[i]->rect, 0, 255, 0, alpha);
 			break;
-		case Collider::Type::ENEMY: // red
+		case Collider::Type::TARGET: // red
 			App->renderer->DrawQuad(colliders[i]->rect, 255, 0, 0, alpha);
 			break;
 		case Collider::Type::NONE: // white

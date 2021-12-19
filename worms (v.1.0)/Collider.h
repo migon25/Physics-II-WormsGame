@@ -15,7 +15,7 @@ struct Collider
 		GROUND,
 		PLAYER,
 		BULLET,
-		ENEMY,
+		TARGET,
 		MAX
 	};
 

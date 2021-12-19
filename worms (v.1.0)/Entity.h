@@ -41,8 +41,10 @@ public:
 	Collider::Type GetColliderType() { return entityBody->collider->type; }
 	EntityModule::EntityType GetType() { return type; }
 
+	bool HasCollider(Collider* col) { return entityBody->collider == col; }
+
 	virtual void Cleanup();
-	virtual void Die(){}
+	virtual void Die() { remove = true; }
 
 	bool Remove() { return remove; }
 

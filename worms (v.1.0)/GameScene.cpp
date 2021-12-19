@@ -9,6 +9,7 @@
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
+#include "EntityModule.h"
 #include "ModuleCollisions.h"
 #include "ModuleFonts.h"
 
@@ -44,7 +45,7 @@ bool GameScene::Start()
 	sky = App->textures->Load("Assets/sky.png");
 
 	// Target
-	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::ENEMY, this);
+	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::TARGET, this);
 	corsairTex = App->textures->Load("Assets/worms.png");
 
 	target->mass = 100; // kg
@@ -61,6 +62,14 @@ bool GameScene::Start()
 	// Module enabler
 	ground->physics_enabled = false;
 	App->player->Enable();
+
+	// Spawn boxes
+	for (int i = 0; i < 2; i++) {
+		App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 700, 380.0 - i*20.0 });
+	}
+
+	App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 730, 380 });
+	App->entityModule->AddEntity(EntityModule::EntityType::ET_BOX, { 730, 360 });
 
 	return ret;
 }

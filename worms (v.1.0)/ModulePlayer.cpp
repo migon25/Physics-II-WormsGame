@@ -126,6 +126,3 @@ update_status ModulePlayer::PostUpdate()
 
 	return UPDATE_CONTINUE;
 }
-
-
-

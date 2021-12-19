@@ -3,12 +3,15 @@
 #include "Entity.h"
 #include "Collider.h"
 #include "Grenade.h"
+#include "Box.h"
 
 #include <iostream>
 
 EntityModule::EntityModule(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	
+	for (int i = 0; i < (int)EntityType::ET_LAST; i++) {
+		entityCount[i] = 0;
+	}
 }
 
 // Destructor
@@ -39,6 +42,8 @@ update_status EntityModule::Update()
 
 		if (entity->data->Remove()) {
 			p2List_item<Entity*>* prev = entity->prev;
+
+			entityCount[(int)entity->data->GetType()]--;
 
 			entity->data->Cleanup();
 			entities.del(entity);
@@ -96,7 +101,12 @@ Entity* EntityModule::AddEntity(EntityType type, Vector2 position)
 	case EntityType::ET_GRENADE:
 		entity = new Grenade(App);
 		break;
+	case EntityType::ET_BOX:
+		entity = new Box(App);
+		break;
 	}
+
+	entityCount[(int)type]++;
 
 	entity->SetPosition(position);
 	entity->Init(this);
@@ -108,4 +118,9 @@ Entity* EntityModule::AddEntity(EntityType type, Vector2 position)
 void EntityModule::OnCollision(PhysBody * bodyA, PhysBody * bodyB)
 {
 	
+}
+
+int EntityModule::GetEntityCount(EntityType type)
+{
+	return entityCount[(int)type];
 }

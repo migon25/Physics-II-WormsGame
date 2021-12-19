@@ -114,8 +114,8 @@ PhysBody * ModulePhysics::CreatePhysBody(SDL_Rect rect, Collider::Type type, Mod
 
 	pbody->physics_enabled = true;
 
-	pbody->oncontact = false;
 	pbody->impulse = false;
+	pbody->oncontact = false;
 
 	pbody->pendingToDelete = false;
 	
@@ -185,7 +185,7 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 				pbodyA->position.x += colWidth;
 			}
 
-			pbodyA->velocity.x = -pbodyA->velocity.x;
+			pbodyA->velocity.x = -pbodyA->velocity.x * pbodyA->frictionCoefficient;
 		}
 		else {
 			// Reposition by Y-axis
@@ -196,26 +196,20 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 				pbodyA->position.y += colHeight;
 			}
 
-			pbodyA->velocity.y = -pbodyA->velocity.y;
+			pbodyA->velocity.y = -pbodyA->velocity.y * pbodyA->restitutionCoefficient;
 		}
 
 		pbodyA->oncontact = true;
-
 		pbodyA->collider->SetPos(pbodyA->position.x, pbodyA->position.y);
 	}
 }
 
 void ModulePhysics::UpdateBody(PhysBody * body)
 {
-	// Step #0: Reset total acceleration and total accumulated force of the ball (clear old values)
 	body->totalForce = { 0.0, 0.0 };
 	body->acceleration = { 0.0, 0.0 };
 
-	if (body->oncontact) {
-		body->velocity.x *= body->frictionCoefficient;
-		body->velocity.y *= body->restitutionCoefficient;
-		body->oncontact = false;
-	}
+	// Step #0: Reset total acceleration and total accumulated force of the ball (clear old values)
 
 	// Step #1: Compute forces
 
@@ -262,6 +256,7 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 
 	body->position.x += body->lastMoveStep.x;
 	body->position.y += body->lastMoveStep.y;
+
 	body->velocity.x += body->acceleration.x * dt;
 	body->velocity.y += body->acceleration.y * dt;
 
