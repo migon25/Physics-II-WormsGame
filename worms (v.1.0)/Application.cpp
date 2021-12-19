@@ -23,11 +23,11 @@ Application::Application()
 	textures = new ModuleTextures(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this);
-	fadeToBlack = new FadeToBlack(this);
+	fadeToBlack = new FadeToBlack(this,true);
 	player = new ModulePlayer(this,false);
-	sceneIntro = new SceneIntro(this, false);
+	sceneIntro = new SceneIntro(this, true);
 	gameOver = new GameOver(this, false);
-	gameScene = new GameScene(this,true);
+	gameScene = new GameScene(this,false);
 	physics = new ModulePhysics(this, true);
 	collisions = new ModuleCollisions(this, true);
 
