@@ -40,9 +40,24 @@ bool ModulePlayer::Start()
 	animations[PS_WALK].loop = true;
 	animations[PS_WALK].speed = 0.05f;
 
+	speedometer.PushBack({ 7,483,28,16 });
+	speedometer.PushBack({ 41,483,28,16 });
+	speedometer.PushBack({ 75,483,28,16 });
+	speedometer.PushBack({ 108,483,28,16 });
+	speedometer.PushBack({ 142,483,28,16 });
+	speedometer.PushBack({ 175,483,28,16 });
+	speedometer.loop = true;
+	speedometer.speed = 0.15f;
+
+
 	worm = App->textures->Load("Assets/worms.png");
 
+<<<<<<< HEAD
+	currentWormAnim = &wormIdle;
+	currentSpeedometerAnim = &speedometer;
+=======
 	state = PS_IDLE;
+>>>>>>> 72624a58fa2fed1aa14970a8ef7056cd421626ef
 
 	return true;
 }
@@ -89,7 +104,16 @@ update_status ModulePlayer::PostUpdate()
 {
 	SDL_Rect animRect = animations[state].GetCurrentFrame();
 
+<<<<<<< HEAD
+	speed = currentSpeedometerAnim->GetCurrentFrame();
+
+	App->renderer->Blit(worm, 10, 10, &speed);
+
+	currentSpeedometerAnim->Update();
+	currentWormAnim->Update();
+=======
 	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &animRect, 1.0f, 0.0, flip);
+>>>>>>> 72624a58fa2fed1aa14970a8ef7056cd421626ef
 
 	return UPDATE_CONTINUE;
 }
