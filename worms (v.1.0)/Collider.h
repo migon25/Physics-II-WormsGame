@@ -12,6 +12,7 @@ struct Collider
 	enum Type
 	{
 		NONE,
+		GROUND,
 		PLAYER,
 		BULLET,
 		ENEMY,

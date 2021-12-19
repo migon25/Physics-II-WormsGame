@@ -8,6 +8,7 @@
 #include "ModuleTextures.h"
 #include "ModuleAudio.h"
 #include "ModulePhysics.h"
+#include "ModulePlayer.h"
 
 #include <iostream>
 
@@ -27,19 +28,24 @@ bool GameScene::Start()
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
 
+	// Atmosphere
 	//App->physics->SetAtmosphere(-10.0, 0, 0.00001);
 
-	ball = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 0, 10, 10, Collider::Type::BULLET, this);
+	// Target
+	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::ENEMY, this);
 
-	ball->mass = 10; // kg
-	ball->surface = 2; // m^2
-	ball->dragCoefficient = -0.4;
-	ball->liftCoefficient = 1.2;
-	ball->frictionCoefficient = 0.5;
+	target->mass = 100; // kg
+	target->surface = 2; // m^2
+	target->dragCoefficient = -0.4;
+	target->liftCoefficient = 1.2;
+	target->frictionCoefficient = 1.0;
 
-	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50, Collider::Type::NONE, this);
+	// Ground
+	ground = App->physics->CreatePhysBody(0, SCREEN_HEIGHT - 100, SCREEN_WIDTH, 150, Collider::Type::GROUND, this);
 
+	// Module enabler
 	ground->physics_enabled = false;
+	//App->player->Enable();
 
 	return ret;
 }
@@ -54,12 +60,8 @@ bool GameScene::CleanUp()
 // Update: draw background
 update_status GameScene::Update()
 {
-	// Instant Loss
-	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
-
 	// Render
-	App->renderer->DrawQuad(ball->collider->rect, 255, 255, 0, 255);
-
+	
 	App->renderer->DrawQuad(ground->collider->rect, 255, 255, 255, 255);
 
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
@@ -73,6 +75,9 @@ update_status GameScene::Update()
 		pb->frictionCoefficient = 0.5;
 		pb->physics_enabled = true;
 	}
+
+	// Instant Loss
+	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
 
 	return UPDATE_CONTINUE;
 }

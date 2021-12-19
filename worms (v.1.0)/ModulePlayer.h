@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Globals.h"
 #include "p2Point.h"
+#include "Animation.h"
 
 class ModulePlayer : public Module
 {
@@ -14,5 +15,14 @@ public:
 	bool CleanUp();
 
 public:
+	PhysBody* playerBody;
+
+private:
+	//SDL_Texture* worm;
+	Animation wormAnim;
+	SDL_Rect wormText;
+
+	//for the body
+	SDL_Rect wormRect;
 
 };

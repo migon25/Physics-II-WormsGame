@@ -16,22 +16,33 @@ ModuleCollisions::ModuleCollisions(Application* app, bool start_enabled) : Modul
 	matrix[Collider::Type::PLAYER][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::PLAYER][Collider::Type::ENEMY] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::PLAYER][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::PLAYER][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::ENEMY][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::ENEMY][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::ENEMY][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::ENEMY][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = false;
 	matrix[Collider::Type::BULLET][Collider::Type::ENEMY] = false;
 	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::BULLET][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::NONE][Collider::Type::NONE] = true;
 	matrix[Collider::Type::NONE][Collider::Type::PLAYER] = true;
 	matrix[Collider::Type::NONE][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::NONE][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::NONE][Collider::Type::BULLET] = true;
+
+	matrix[Collider::Type::GROUND][Collider::Type::GROUND] = false;
+	matrix[Collider::Type::GROUND][Collider::Type::PLAYER] = true;
+	matrix[Collider::Type::GROUND][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::GROUND][Collider::Type::BULLET] = true;
+	matrix[Collider::Type::GROUND][Collider::Type::NONE] = true;
+
 }
 
 // Destructor
@@ -98,7 +109,7 @@ update_status ModuleCollisions::Update()
 
 update_status ModuleCollisions::PostUpdate()
 {
-	if (debug)
+	//if (debug)
 		DebugDraw();
 
 	return UPDATE_CONTINUE;
