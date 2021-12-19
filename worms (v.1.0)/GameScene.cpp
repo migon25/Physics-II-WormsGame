@@ -66,7 +66,8 @@ update_status GameScene::Update()
 	App->renderer->Blit(sky, 0, 0, NULL);
 	App->renderer->Blit(terrain, 0, SCREEN_HEIGHT - 100, NULL);
 
-	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) {
+	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
+	{
 		SDL_Rect rect;
 		rect.x = App->input->GetMouseX() - 25;
 		rect.y = App->input->GetMouseY() - 25;

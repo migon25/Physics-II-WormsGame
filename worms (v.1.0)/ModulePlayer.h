@@ -20,7 +20,13 @@ public:
 	PhysBody* playerBody;
 
 	SDL_Texture* worm;
+
+	Animation* currentWormAnim = nullptr;
+
 	Animation wormAnim;
+	Animation wormWalkRAnim;
+	Animation wormWalkLAnim;
+
 	SDL_Rect wormText;
 
 	//for the body
