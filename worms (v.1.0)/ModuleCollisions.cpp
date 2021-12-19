@@ -109,7 +109,7 @@ update_status ModuleCollisions::Update()
 
 update_status ModuleCollisions::PostUpdate()
 {
-	if (debug)
+	//if (debug)
 		DebugDraw();
 
 	return UPDATE_CONTINUE;
@@ -137,7 +137,7 @@ void ModuleCollisions::DebugDraw()
 		case Collider::Type::NONE: // white
 			App->renderer->DrawQuad(colliders[i]->rect, 255, 255, 255, alpha);
 			break;
-		case Collider::Type::GROUND: // white
+		case Collider::Type::GROUND: // green
 			App->renderer->DrawQuad(colliders[i]->rect, 84, 141, 84, 255);
 			break;
 		}

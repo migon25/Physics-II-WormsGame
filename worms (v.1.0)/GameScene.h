@@ -3,6 +3,7 @@
 #include "p2List.h"
 #include "p2Point.h"
 #include "Globals.h"
+#include "Vector2.h"
 
 class PhysBody;
 struct SDL_Texture;
@@ -24,4 +25,13 @@ public:
 
 	SDL_Texture* terrain;
 	SDL_Texture* sky;
+
+	//test
+	Vector2 grenadePos;
+
+	// Mouse
+	SDL_Texture* corsairTex;
+	Animation corsairAnim;
+	SDL_Rect corsairRec;
+	Vector2 mousePos;
 };
