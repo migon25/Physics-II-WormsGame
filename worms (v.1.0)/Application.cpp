@@ -12,6 +12,7 @@
 #include "GameScene.h"
 #include "FadeToBlack.h"
 #include "ModuleCollisions.h"
+#include "EntityModule.h"
 
 #include "Application.h"
 #include <time.h>
@@ -30,6 +31,7 @@ Application::Application()
 	gameScene = new GameScene(this,true);
 	physics = new ModulePhysics(this, true);
 	collisions = new ModuleCollisions(this, true);
+	entityModule = new EntityModule(this, true);
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -51,6 +53,7 @@ Application::Application()
 	AddModule(fadeToBlack);
 	
 	// Player
+	AddModule(entityModule);
 	AddModule(player);
 
 	AddModule(renderer);

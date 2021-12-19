@@ -26,8 +26,8 @@ ModuleCollisions::ModuleCollisions(Application* app, bool start_enabled) : Modul
 	matrix[Collider::Type::ENEMY][Collider::Type::NONE] = true;
 
 	matrix[Collider::Type::BULLET][Collider::Type::PLAYER] = false;
-	matrix[Collider::Type::BULLET][Collider::Type::ENEMY] = false;
-	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = false;
+	matrix[Collider::Type::BULLET][Collider::Type::ENEMY] = true;
+	matrix[Collider::Type::BULLET][Collider::Type::BULLET] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::GROUND] = true;
 	matrix[Collider::Type::BULLET][Collider::Type::NONE] = true;
 

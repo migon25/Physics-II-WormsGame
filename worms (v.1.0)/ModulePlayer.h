@@ -37,4 +37,8 @@ public:
 
 	int prevPos;
 
+	double grenadeOffset;
+	double grenadeForce;
+private:
+	void Shoot();
 };

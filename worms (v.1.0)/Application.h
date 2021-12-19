@@ -16,6 +16,7 @@ class GameOver;
 class ModulePhysics;
 class FadeToBlack;
 class ModuleCollisions;
+class EntityModule;
 
 class Application
 {
@@ -32,6 +33,7 @@ public:
 	ModulePhysics* physics;
 	FadeToBlack* fadeToBlack;
 	ModuleCollisions* collisions;
+	EntityModule* entityModule;
 
 private:
 

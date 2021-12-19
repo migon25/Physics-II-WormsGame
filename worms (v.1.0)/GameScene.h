@@ -27,11 +27,12 @@ public:
 	SDL_Texture* sky;
 
 	//test
-	Vector2 grenadePos;
+	p2List<PhysBody*> grenades;
 
 	// Mouse
 	SDL_Texture* corsairTex;
 	Animation corsairAnim;
 	SDL_Rect corsairRec;
 	Vector2 mousePos;
+private:
 };

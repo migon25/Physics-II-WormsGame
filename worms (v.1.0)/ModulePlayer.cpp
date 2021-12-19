@@ -6,6 +6,9 @@
 #include "ModuleRender.h"
 #include "ModuleInput.h"
 #include "ModuleTextures.h"
+#include "GameScene.h"
+#include "EntityModule.h"
+#include "Grenade.h"
 
 ModulePlayer::ModulePlayer(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -44,6 +47,9 @@ bool ModulePlayer::Start()
 
 	state = PS_IDLE;
 
+	grenadeOffset = 10.0;
+	grenadeForce = 180000;
+
 	return true;
 }
 
@@ -53,6 +59,22 @@ bool ModulePlayer::CleanUp()
 	LOG("Unloading player");
 
 	return true;
+}
+
+void ModulePlayer::Shoot()
+{
+	int mouseX = App->input->GetMouseX();
+	int mouseY = App->input->GetMouseY();
+	Vector2 mousePos(mouseX, mouseY);
+
+	Vector2 diff = mousePos - playerBody->position;
+	diff.Normalize();
+
+	Vector2 grenadePos = playerBody->position + (diff * grenadeOffset);
+	Vector2 grenadeImpulse = diff * grenadeForce;
+
+	Entity* entity = App->entityModule->AddEntity(EntityModule::EntityType::ET_GRENADE, grenadePos);
+	entity->Impulse(grenadeImpulse);
 }
 
 // Update: draw background
@@ -78,6 +100,10 @@ update_status ModulePlayer::Update()
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
 		playerBody->Impulse(0, -50000);
+	}
+
+	if (App->input->GetMouseButton(1) == KEY_DOWN) {
+		Shoot();
 	}
 
 	animations[state].Update();

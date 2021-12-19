@@ -77,6 +77,15 @@
     <ClInclude Include="Vector2.h">
       <Filter>Header Files\Containers</Filter>
     </ClInclude>
+    <ClInclude Include="EntityModule.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Grenade.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -129,6 +138,15 @@
     </ClCompile>
     <ClCompile Include="Vector2.cpp">
       <Filter>Header Files\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Grenade.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
