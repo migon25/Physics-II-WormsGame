@@ -30,14 +30,15 @@ bool ModulePlayer::Start()
 	playerBody->dragCoefficient = 0.0;
 	playerBody->liftCoefficient = 0.0;
 	playerBody->frictionCoefficient = 0.0;
+	playerBody->restitutionCoefficient = 0.0;
 
-	wormIdle.PushBack({ 8,7,8,13 });
-	wormIdle.loop = false;
+	animations[PS_IDLE].PushBack({ 8,7,8,13 });
+	animations[PS_IDLE].loop = false;
 
-	wormWalk.PushBack({ 8,7,8,13 });
-	wormWalk.PushBack({ 19,7,8,13 });
-	wormWalk.loop = true;
-	wormWalk.speed = 0.05f;
+	animations[PS_WALK].PushBack({ 8,7,8,13 });
+	animations[PS_WALK].PushBack({ 19,7,8,13 });
+	animations[PS_WALK].loop = true;
+	animations[PS_WALK].speed = 0.05f;
 
 	speedometer.PushBack({ 7,483,28,16 });
 	speedometer.PushBack({ 41,483,28,16 });
@@ -51,8 +52,12 @@ bool ModulePlayer::Start()
 
 	worm = App->textures->Load("Assets/worms.png");
 
+<<<<<<< HEAD
 	currentWormAnim = &wormIdle;
 	currentSpeedometerAnim = &speedometer;
+=======
+	state = PS_IDLE;
+>>>>>>> 72624a58fa2fed1aa14970a8ef7056cd421626ef
 
 	return true;
 }
@@ -68,40 +73,47 @@ bool ModulePlayer::CleanUp()
 // Update: draw background
 update_status ModulePlayer::Update()
 {
-	wormText = currentWormAnim->GetCurrentFrame();
-	
+	state = PS_IDLE;
+
 	if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
 	{
-		currentWormAnim = &wormWalk;
-		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
+		state = PS_WALK;
+		flip = SDL_FLIP_NONE;
 		playerBody->position.x += 1;
 		prevPos = playerBody->position.x - 1;
 	} 
 	if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
 	{
-		currentWormAnim = &wormWalk;
-		App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);
+		state = PS_WALK;
+		flip = SDL_FLIP_HORIZONTAL;
 		playerBody->position.x -= 1;
 		prevPos = playerBody->position.x + 1;
 	}
+
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		playerBody->velocity.y -= 50;
+		playerBody->Impulse(0, -50000);
 	}
 
-	if ((App->input->GetKey(SDL_SCANCODE_A) == false) && (App->input->GetKey(SDL_SCANCODE_D) == false))
-	{
-		currentWormAnim = &wormIdle;
-		if (playerBody->position.x < prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText, false, 1.0, SDL_FLIP_HORIZONTAL);;
-		if (playerBody->position.x > prevPos) App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &wormText);
-	}
+	animations[state].Update();
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModulePlayer::PostUpdate()
+{
+	SDL_Rect animRect = animations[state].GetCurrentFrame();
+
+<<<<<<< HEAD
 	speed = currentSpeedometerAnim->GetCurrentFrame();
 
 	App->renderer->Blit(worm, 10, 10, &speed);
 
 	currentSpeedometerAnim->Update();
 	currentWormAnim->Update();
+=======
+	App->renderer->Blit(worm, playerBody->position.x, playerBody->position.y, &animRect, 1.0f, 0.0, flip);
+>>>>>>> 72624a58fa2fed1aa14970a8ef7056cd421626ef
 
 	return UPDATE_CONTINUE;
 }

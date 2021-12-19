@@ -53,14 +53,21 @@ struct PhysBody
 	double liftCoefficient;
 
 	double frictionCoefficient;
+	double restitutionCoefficient;
 
-	bool frictioning;
+	bool oncontact;
+	bool impulse;
+
+	Vector2 impulseForce;
 
 	Collider* collider;
 	double gravityScale;
 
 	void GetPosition(int& x, int &y) const;
 	void SetPosition(int x, int y);
+
+	void Impulse(double x, double y);
+
 	void Remove();
 
 	bool pendingToDelete;
