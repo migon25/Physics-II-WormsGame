@@ -14,7 +14,8 @@
 
 GameScene::GameScene(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
-	
+	corsairAnim.PushBack({ 148,7,10,10 });
+	corsairAnim.loop = false;
 }
 
 GameScene::~GameScene()
@@ -34,6 +35,7 @@ bool GameScene::Start()
 
 	// Target
 	target = App->physics->CreatePhysBody(SCREEN_WIDTH / 2, 100, 50, 50, Collider::Type::ENEMY, this);
+	corsairTex = App->textures->Load("Assets/worms.png");
 
 	target->mass = 100; // kg
 	target->surface = 2; // m^2
@@ -67,6 +69,12 @@ update_status GameScene::Update()
 	App->renderer->Blit(sky, 0, 0, NULL);
 	App->renderer->Blit(terrain, 0, SCREEN_HEIGHT - 100, NULL);
 
+	// Mouse cursor
+	corsairRec = corsairAnim.GetCurrentFrame();
+	mousePos.x = App->input->GetMouseX()-5;
+	mousePos.y = App->input->GetMouseY()-5;
+	App->renderer->Blit(corsairTex, mousePos.x, mousePos.y, &corsairRec);
+
 	if (App->input->GetKey(SDL_SCANCODE_F6) == KEY_DOWN) 
 	{
 		SDL_Rect rect;
@@ -79,7 +87,11 @@ update_status GameScene::Update()
 		pb->frictionCoefficient = 0.5;
 		pb->restitutionCoefficient = 0.5;
 		pb->physics_enabled = true;
+		grenadePos.x = rect.x;
+		grenadePos.y = rect.y;
 	}
+
+	App->renderer->Blit(corsairTex, grenadePos.x, grenadePos.y, &corsairRec);
 
 	// Instant Loss
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);

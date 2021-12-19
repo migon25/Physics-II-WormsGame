@@ -23,9 +23,8 @@ public:
 
 	Animation* currentWormAnim = nullptr;
 
-	Animation wormAnim;
-	Animation wormWalkRAnim;
-	Animation wormWalkLAnim;
+	Animation wormIdle;
+	Animation wormWalk;
 
 	SDL_Rect wormText;
 
