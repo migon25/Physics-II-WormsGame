@@ -29,7 +29,7 @@ bool ModulePlayer::Start()
 	playerBody->surface = 2; // m^2
 	playerBody->dragCoefficient = 0.0;
 	playerBody->liftCoefficient = 0.0;
-	playerBody->frictionCoefficient = 1.0;
+	playerBody->frictionCoefficient = 0.0;
 
 	wormAnim.PushBack({ 8,7,8,13 });
 	worm = App->textures->Load("Assets/worms.png");
