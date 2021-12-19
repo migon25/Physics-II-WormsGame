@@ -25,8 +25,11 @@ public:
 	update_status Update();
 
 	bool CleanUp();
+
 public:
 	
+	SDL_Texture* startBackground;
+
 };
 
 #endif	// __SCENEINTRO_H__

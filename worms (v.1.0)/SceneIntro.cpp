@@ -25,6 +25,8 @@ bool SceneIntro::Start()
 
 	bool ret = true;
 
+	startBackground = App->textures->Load("Assets/wormsIntro.png");
+
 	return ret;
 }
 
@@ -37,11 +39,15 @@ update_status SceneIntro::Update()
 	}
 
 	// Put images, example: App->renderer->Blit(Title, 0, 0, NULL);
+
+	App->renderer->Blit(startBackground, 0, 0, NULL);
 	
 	return UPDATE_CONTINUE;
 }
 
 bool SceneIntro::CleanUp()
 {
+	App->textures->Unload(startBackground);
+
 	return true;
 }
