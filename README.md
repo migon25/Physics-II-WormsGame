@@ -28,6 +28,8 @@ Debug Features
 
 F1 debug controls.
 
+F2 for instant lose.
+
 
 Github Link to the project can be found here: https://github.com/migon25/Physics-II-WormsGame
 
