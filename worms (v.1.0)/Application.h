@@ -10,6 +10,7 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleAudio;
 class ModulePlayer;
+class ModuleFonts;
 class GameScene;
 class SceneIntro;
 class GameOver;
@@ -27,6 +28,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModulePlayer* player;
+	ModuleFonts* fonts;
 	GameScene* gameScene;
 	SceneIntro* sceneIntro;
 	GameOver* gameOver;

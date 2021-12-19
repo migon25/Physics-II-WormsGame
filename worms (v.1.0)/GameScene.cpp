@@ -10,6 +10,8 @@
 #include "ModulePhysics.h"
 #include "ModulePlayer.h"
 #include "EntityModule.h"
+#include "ModuleCollisions.h"
+#include "ModuleFonts.h"
 
 #include <iostream>
 
@@ -29,6 +31,14 @@ bool GameScene::Start()
 	bool ret = true;
 
 	App->renderer->camera.x = App->renderer->camera.y = 0;
+
+	// Fonts
+	char lookupTable[] = { "abcdefghijklmnopqrstuvwxyz" };
+	fonts = App->fonts->Load("Assets/fonts.png", lookupTable, 1);
+	numbers = App->textures->Load("Assets/numbers.png");
+	numBoxes = 0;
+	numEnemies = 0;
+	numGren = 0;
 
 	// Atmosphere
 	//App->physics->SetAtmosphere(-10.0, 0, 0.00001);
@@ -86,6 +96,17 @@ update_status GameScene::Update()
 
 	// Instant Loss
 	if (App->input->GetKey(SDL_SCANCODE_F2) == KEY_DOWN) App->fadeToBlack->Fade_To_Black(this, (Module*)App->gameOver, 0);
+
+	// Numbers display
+	if (App->collisions->debug == true)
+	{
+		App->fonts->BlitText(20, 20, fonts, "enemies");
+		App->renderer->DrawNumber(numEnemies, 120, 20, 3, numbers, 7, 10);
+		App->fonts->BlitText(20, 40, fonts, "boxes");
+		App->renderer->DrawNumber(numBoxes, 120, 40, 3, numbers, 7, 10);
+		App->fonts->BlitText(20, 60, fonts, "grenades");
+		App->renderer->DrawNumber(numGren, 120, 60, 3, numbers, 7, 10);
+	}
 
 	return UPDATE_CONTINUE;
 }

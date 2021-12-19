@@ -34,5 +34,14 @@ public:
 	Animation corsairAnim;
 	SDL_Rect corsairRec;
 	Vector2 mousePos;
+
+	// numbers
+	SDL_Texture* numbers;
+	SDL_Texture* font;
+	int numEnemies;
+	int numGren;
+	int numBoxes;
+	int fonts;
+
 private:
 };
