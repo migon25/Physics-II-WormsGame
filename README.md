@@ -20,8 +20,9 @@ Space to start the game, or restart after game is lost.
 
 Mouse left click to launch a grenade.
 
-Mouse right click to launch an ice cube.
+Switching weapons when "1" is pressed.
 
+Switch between velocity integrator by pressing "2".
 
 Debug Features
 
