@@ -42,7 +42,7 @@ struct PhysBody
 	// Force (total) applied to the ball
 	Vector2 totalForce;
 
-	Vector2 lastMoveStep;
+	Vector2 lastStep;
 
 	// Mass
 	double mass;
@@ -56,9 +56,6 @@ struct PhysBody
 	double restitutionCoefficient;
 
 	bool oncontact;
-	bool impulse;
-
-	Vector2 impulseForce;
 
 	Collider* collider;
 	double gravityScale;
@@ -85,6 +82,12 @@ struct Atmosphere {
 class ModulePhysics : public Module // TODO
 {
 public:
+	enum class VelocityIntegrator {
+		VERLET,
+		SYMPLETIC_EULER,
+		IMPLICIT_EULER
+	};
+
 	ModulePhysics(Application* app, bool start_enabled = true);
 	~ModulePhysics();
 
@@ -100,7 +103,10 @@ public:
 	void OnCollision(Collider* colA, Collider* colB) override;
 
 	void SetAtmosphere(double _windX, double _windY, double _density) { atmosphere.windx = _windX; atmosphere.windy = _windY; atmosphere.density = _density; };
+	void SetVelocityIntegrator(VelocityIntegrator velocity_integrator);
 private:
+	VelocityIntegrator velocityIntegrator;
+
 	PhysBody* physicsBodies[MAX_PHYSICS_BODIES] = { nullptr };
 
 	Atmosphere atmosphere;
@@ -109,4 +115,8 @@ private:
 
 	Direction GetCollisionDirection(Vector2 difference);
 	double CalculateSpeed(double dx, double dy);
+
+	void integrator_velocity_verlet(PhysBody* body, float dt);
+	void integrator_velocity_sympleticeuler(PhysBody* body, float dt);
+	void integrator_velocity_impliciteuler(PhysBody* body, float dt);
 };

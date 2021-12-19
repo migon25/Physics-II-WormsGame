@@ -30,6 +30,8 @@ bool ModulePhysics::Start()
 	atmosphere.windy = 0;
 	atmosphere.density = 0;
 
+	velocityIntegrator = VelocityIntegrator::IMPLICIT_EULER;
+
 	return true;
 }
 
@@ -112,9 +114,10 @@ PhysBody * ModulePhysics::CreatePhysBody(SDL_Rect rect, Collider::Type type, Mod
 	pbody->liftCoefficient = 0.0;
 	pbody->restitutionCoefficient = 0.0;
 
+	pbody->lastStep = { 0, 0 };
+
 	pbody->physics_enabled = true;
 
-	pbody->impulse = false;
 	pbody->oncontact = false;
 
 	pbody->pendingToDelete = false;
@@ -197,6 +200,7 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 			}
 
 			pbodyA->velocity.y = -pbodyA->velocity.y * pbodyA->restitutionCoefficient;
+			pbodyA->velocity.x *= pbodyA->frictionCoefficient;
 		}
 
 		pbodyA->oncontact = true;
@@ -204,13 +208,16 @@ void ModulePhysics::OnCollision(Collider * colA, Collider * colB)
 	}
 }
 
+void ModulePhysics::SetVelocityIntegrator(VelocityIntegrator velocity_integrator)
+{
+	velocityIntegrator = velocity_integrator;
+}
+
 void ModulePhysics::UpdateBody(PhysBody * body)
 {
+	// Step #0: Reset total acceleration and total accumulated force of the ball (clear old values)
 	body->totalForce = { 0.0, 0.0 };
 	body->acceleration = { 0.0, 0.0 };
-
-	// Step #0: Reset total acceleration and total accumulated force of the ball (clear old values)
-
 	// Step #1: Compute forces
 
 		// Compute Gravity force
@@ -234,15 +241,7 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	body->totalForce.x += fdx;
 	body->totalForce.y += fdy;
 
-	if (body->impulse) {
-		body->totalForce += body->impulseForce;
-		body->impulse = false;
-	}
-
-	// Other forces
-	// ...
-
-// Step #2: 2nd Newton's Law: SUM_Forces = mass * accel --> accel = SUM_Forces / mass
+	// Step #2: 2nd Newton's Law: SUM_Forces = mass * accel --> accel = SUM_Forces / mass
 	body->acceleration.x = body->totalForce.x / body->mass;
 	body->acceleration.y = body->totalForce.y / body->mass;
 
@@ -251,14 +250,17 @@ void ModulePhysics::UpdateBody(PhysBody * body)
 	// You can also move this code into a subroutine: integrator_velocity_verlet(ball, dt);
 	float dt = App->deltaTime;
 
-	body->lastMoveStep.x = body->velocity.x * dt + 0.5 * body->acceleration.x * dt * dt;
-	body->lastMoveStep.y = body->velocity.y * dt + 0.5 * body->acceleration.y * dt * dt;
-
-	body->position.x += body->lastMoveStep.x;
-	body->position.y += body->lastMoveStep.y;
-
-	body->velocity.x += body->acceleration.x * dt;
-	body->velocity.y += body->acceleration.y * dt;
+	switch (velocityIntegrator) {
+	case VelocityIntegrator::VERLET:
+		integrator_velocity_verlet(body, dt);
+		break;
+	case VelocityIntegrator::SYMPLETIC_EULER:
+		integrator_velocity_sympleticeuler(body, dt);
+		break;
+	case VelocityIntegrator::IMPLICIT_EULER:
+		integrator_velocity_impliciteuler(body, dt);
+		break;
+	}
 
 	body->collider->SetPos(body->position.x, body->position.y);
 }
@@ -296,6 +298,38 @@ double ModulePhysics::CalculateSpeed(double dx, double dy)
 	return distance / App->deltaTime;
 }
 
+void ModulePhysics::integrator_velocity_verlet(PhysBody * body, float dt)
+{
+	body->lastStep.x = body->velocity.x * dt + 0.5 * body->acceleration.x * dt * dt;
+	body->lastStep.y = body->velocity.y * dt + 0.5 * body->acceleration.y * dt * dt;
+
+	body->position += body->lastStep;
+
+	body->velocity.x += body->acceleration.x * dt;
+	body->velocity.y += body->acceleration.y * dt;
+}
+
+void ModulePhysics::integrator_velocity_sympleticeuler(PhysBody * body, float dt)
+{
+	body->velocity.x += body->acceleration.x * dt;
+	body->velocity.y += body->acceleration.y * dt;
+
+	body->lastStep.x = body->velocity.x * dt;
+	body->lastStep.y = body->velocity.y * dt;
+
+	body->position += body->lastStep;
+}
+
+void ModulePhysics::integrator_velocity_impliciteuler(PhysBody * body, float dt)
+{
+	body->lastStep.x = body->velocity.x * dt;
+	body->lastStep.y = body->velocity.y * dt;
+
+	body->position += body->lastStep;
+	body->velocity.x += body->acceleration.x * dt;
+	body->velocity.y += body->acceleration.y * dt;
+}
+
 void PhysBody::GetPosition(int& x, int &y) const
 {
 	x = collider->rect.x;
@@ -313,8 +347,8 @@ void PhysBody::SetPosition(int _x, int _y)
 
 void PhysBody::Impulse(double x, double y)
 {
-	impulse = true;
-	impulseForce = { x, y };
+	velocity.x += x;
+	velocity.y += y;
 }
 
 void PhysBody::Remove()

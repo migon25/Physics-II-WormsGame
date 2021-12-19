@@ -47,11 +47,14 @@ bool ModulePlayer::Start()
 
 	state = PS_IDLE;
 
-	grenadeOffset = 10.0;
-	maxForce = 260000;
-	minForce = 250000;
+	maxForce = 250;
+	minForce = 150;
 	grenadeForce = minForce;
+
 	iceForce = minForce;
+
+	grenadeOffset = 20.0;
+
 
 	return true;
 }
@@ -118,7 +121,7 @@ update_status ModulePlayer::Update()
 
 	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		playerBody->Impulse(0, -50000);
+		playerBody->Impulse(0, -100);
 	}
 
 	if (App->input->GetMouseButton(3) == KEY_REPEAT) {
@@ -130,8 +133,8 @@ update_status ModulePlayer::Update()
 	}
 
 	if (App->input->GetMouseButton(1) == KEY_REPEAT) {
-		grenadeForce += 2500;
-		if (grenadeForce == maxForce) grenadeForce = maxForce;
+		grenadeForce++;
+		if (grenadeForce >= maxForce) grenadeForce = maxForce;
 	}
 	if (App->input->GetMouseButton(1) == KEY_UP) {
 		Shoot();
